@@ -3,31 +3,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { listPublicImages } from '../lib/gallery';
 
 const images = listPublicImages('trivan');
-const background = images[0];
+const photo = images[0];
 ---
 
 <BaseLayout title="Trivan" description="Trivan">
-  <section
-    class="relative min-h-[70vh] flex items-end md:items-center"
-    style={background ? `background-image: url('${background.src}'); background-size: cover; background-position: center;` : undefined}
-  >
+  <section class="mx-auto max-w-5xl px-4 py-8 md:py-12">
     {
-      !background && (
-        <div class="absolute inset-0 bg-gradient-to-b from-mist to-sand" aria-hidden="true" />
+      photo ? (
+        <div class="relative overflow-hidden">
+          <img
+            src={photo.src}
+            alt=""
+            class="block w-full h-auto"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-deep/55 via-deep/15 to-transparent" aria-hidden="true" />
+          <div class="absolute inset-x-0 bottom-0 px-6 pb-8 md:px-10 md:pb-12">
+            <h1 class="text-4xl md:text-5xl text-foam">Trivan</h1>
+            <p class="mt-4 text-lg text-foam/90 leading-relaxed max-w-xl">
+              Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div class="py-12">
+          <h1 class="text-4xl text-deep">Trivan</h1>
+          <p class="mt-6 text-lg text-sea leading-relaxed max-w-xl">
+            Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
+          </p>
+        </div>
       )
     }
-    {
-      background && (
-        <div class="absolute inset-0 bg-deep/35" aria-hidden="true" />
-      )
-    }
-    <div class="relative mx-auto max-w-3xl px-4 py-16 w-full">
-      <h1 class:list={['text-4xl md:text-5xl', background ? 'text-foam' : 'text-deep']}>
-        Trivan
-      </h1>
-      <p class:list={['mt-6 text-lg leading-relaxed max-w-xl', background ? 'text-foam/90' : 'text-sea']}>
-        Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
-      </p>
-    </div>
   </section>
 </BaseLayout>
