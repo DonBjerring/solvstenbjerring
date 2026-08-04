@@ -1,0 +1,114 @@
+---
+const pathname = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(href);
+}
+
+const markusActive = pathname.startsWith('/markus');
+---
+
+<header class="border-b border-mist bg-sand/95 backdrop-blur-sm sticky top-0 z-40">
+  <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between gap-4">
+    <a href="/" class="font-display text-xl text-deep hover:text-sea transition-colors">
+      Solvsten Bjerring
+    </a>
+
+    <button
+      type="button"
+      id="nav-toggle"
+      class="md:hidden inline-flex items-center justify-center rounded-sm border border-mist px-3 py-2 text-sm text-deep"
+      aria-expanded="false"
+      aria-controls="site-nav"
+    >
+      Menu
+    </button>
+
+    <nav
+      id="site-nav"
+      class="hidden md:block absolute md:static left-0 right-0 top-full bg-sand md:bg-transparent border-b border-mist md:border-0 px-4 pb-4 md:p-0"
+      aria-label="Hovedmenu"
+    >
+      <ul class="flex flex-col md:flex-row md:items-center gap-1 md:gap-6 text-base pt-2 md:pt-0">
+        <li>
+          <a
+            href="/"
+            class:list={[
+              'block py-2 md:py-0 transition-colors',
+              pathname === '/' ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+            ]}
+          >
+            Forside
+          </a>
+        </li>
+        <li>
+          <a
+            href="/trivan/"
+            class:list={[
+              'block py-2 md:py-0 transition-colors',
+              isActive('/trivan/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+            ]}
+          >
+            Trivan
+          </a>
+        </li>
+        <li>
+          <details class="group">
+            <summary
+              class:list={[
+                'list-none cursor-pointer py-2 md:py-0 transition-colors flex items-center gap-1',
+                markusActive ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+              ]}
+            >
+              Markus
+              <span class="text-xs opacity-70" aria-hidden="true">▾</span>
+            </summary>
+            <ul class="pl-3 md:pl-0 md:absolute md:left-0 md:mt-2 md:min-w-[11rem] md:bg-foam md:border md:border-mist md:shadow-sm md:py-2 md:rounded-sm">
+              <li>
+                <a href="/markus/" class="block md:px-4 py-2 text-sea hover:text-deep">Oversigt</a>
+              </li>
+              <li>
+                <a href="/markus/forloeb/" class="block md:px-4 py-2 text-sea hover:text-deep">Forløb</a>
+              </li>
+              <li>
+                <a href="/markus/galleri/" class="block md:px-4 py-2 text-sea hover:text-deep">Galleri</a>
+              </li>
+              <li>
+                <a href="/markus/diplomer/" class="block md:px-4 py-2 text-sea hover:text-deep">Diplomer</a>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <a
+            href="/om-familien/"
+            class:list={[
+              'block py-2 md:py-0 transition-colors',
+              isActive('/om-familien/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+            ]}
+          >
+            Om familien
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('site-nav');
+
+  toggle?.addEventListener('click', () => {
+    nav?.classList.toggle('hidden');
+    const open = !nav?.classList.contains('hidden');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

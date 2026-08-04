@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryGrid from '../../components/GalleryGrid.astro';
+import { listPublicImages } from '../../lib/gallery';
+
+const images = listPublicImages('markus/galleri');
+---
+
+<BaseLayout title="Galleri" description="Billeder af Markus.">
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <h1 class="text-4xl text-deep">Galleri</h1>
+    <p class="mt-3 text-sea">Billeder af Markus.</p>
+    <div class="mt-8">
+      <GalleryGrid images={images} emptyMessage="Ingen billeder endnu." />
+    </div>
+  </div>
+</BaseLayout>

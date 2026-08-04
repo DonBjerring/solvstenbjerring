@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
+
+  --color-sand: #f4f6f8;
+  --color-mist: #e4ebf0;
+  --color-sea: #6b8499;
+  --color-deep: #2c3a45;
+  --color-foam: #ffffff;
+  --color-drift: #8a9aaa;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-sand text-deep font-sans antialiased;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-display;
+}
+
+.prose p {
+  @apply mb-4;
+}
+
+.prose img {
+  @apply my-6 w-full h-auto rounded-sm;
+}
+
+.prose a {
+  @apply text-sea underline;
+}
