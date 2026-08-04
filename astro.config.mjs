@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // When www.solvstenbjerring.dk is connected, change base to '/' and site to the custom domain.
 export default defineConfig({
   site: 'https://donbjerring.github.io',
-  base: '/solvstenbjerring',
+  base: '/solvstenbjerring/',
   output: 'static',
   vite: {
     plugins: [tailwindcss()],

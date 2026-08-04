@@ -14,7 +14,8 @@ export function listPublicImages(subdir: string): { src: string; name: string }[
     .sort((a, b) => a.localeCompare(b, 'da'))
     .map((name) => {
       const relative = `images/${subdir.replace(/\\/g, '/')}/${name}`;
-      const base = import.meta.env.BASE_URL ?? '/';
+      const raw = import.meta.env.BASE_URL || '/';
+      const base = raw.endsWith('/') ? raw : `${raw}/`;
       return {
         name,
         src: `${base}${relative}`,
