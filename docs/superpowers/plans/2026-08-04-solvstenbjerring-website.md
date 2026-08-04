@@ -429,8 +429,8 @@ const hero = homeImages[0];
   <section class="mx-auto max-w-2xl px-4 py-12 text-center">
     <h1 class="text-4xl md:text-5xl text-deep">Sølvsten Bjerring</h1>
     <p class="mt-4 text-lg text-sea leading-relaxed">
-      En rolig side til familie og venner — med opdateringer og billeder fra vores hverdag,
-      især Markus’ forløb.
+      Hvad sker der egentlig for tiden hos familien Sølvsten Bjerring? Det er hemmeligt! 
+      Så hvis du har fundet vej herind, så hold det for dig selv!
     </p>
   </section>
 </BaseLayout>
