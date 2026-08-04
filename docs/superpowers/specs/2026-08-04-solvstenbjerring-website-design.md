@@ -1,4 +1,4 @@
-# Solvsten Bjerring — Family Website Design
+# Sølvsten Bjerring — Family Website Design
 
 **Date:** 2026-08-04  
 **Status:** Approved  

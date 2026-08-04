@@ -1,4 +1,4 @@
-# Solvsten Bjerring Website Implementation Plan
+# Sølvsten Bjerring Website Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -191,9 +191,9 @@ interface Props {
 
 const {
   title,
-  description = 'Familiehjemmeside for familien Solvsten Bjerring.',
+  description = 'Familiehjemmeside for familien Sølvsten Bjerring.',
 } = Astro.props;
-const pageTitle = title === 'Solvsten Bjerring' ? title : `${title} · Solvsten Bjerring`;
+const pageTitle = title === 'Sølvsten Bjerring' ? title : `${title} · Sølvsten Bjerring`;
 ---
 
 <!doctype html>
@@ -226,7 +226,7 @@ const pageTitle = title === 'Solvsten Bjerring' ? title : `${title} · Solvsten 
 Desktop: links Forside, Trivan, Markus (details/summary or hover dropdown with Forløb, Galleri, Diplomer), Om familien.  
 Mobile: button toggles a panel with the same links (small inline `<script>` is fine).
 
-Brand text in header: **Solvsten Bjerring** (link to `/`). Keep brand visible but not competing with page content — on Forside the page itself carries the main brand moment.
+Brand text in header: **Sølvsten Bjerring** (link to `/`). Keep brand visible but not competing with page content — on Forside the page itself carries the main brand moment.
 
 Mark active route with `Astro.url.pathname` (prefix match for `/markus`).
 
@@ -238,7 +238,7 @@ const year = new Date().getFullYear();
 ---
 <footer class="border-t border-mist mt-16">
   <div class="mx-auto max-w-3xl px-4 py-8 text-sm text-sea">
-    <p>© {year} Familien Solvsten Bjerring</p>
+    <p>© {year} Familien Sølvsten Bjerring</p>
   </div>
 </footer>
 ```
@@ -249,9 +249,9 @@ const year = new Date().getFullYear();
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Solvsten Bjerring">
+<BaseLayout title="Sølvsten Bjerring">
   <div class="mx-auto max-w-3xl px-4 py-16">
-    <h1 class="text-4xl text-deep">Solvsten Bjerring</h1>
+    <h1 class="text-4xl text-deep">Sølvsten Bjerring</h1>
     <p class="mt-4 text-sea">Layout smoke test</p>
   </div>
 </BaseLayout>
@@ -402,7 +402,7 @@ Shared page shell pattern: `mx-auto max-w-3xl px-4 py-12` (galleries may use `ma
 
 - [ ] **Step 1: Forside `src/pages/index.astro`**
 
-- Large brand heading: **Solvsten Bjerring**
+- Large brand heading: **Sølvsten Bjerring**
 - One short paragraph explaining the site (Danish): private family site for updates and photos
 - Full-bleed or near full-width house image: try `/images/hjem/hus.jpg` (document filename in README). If missing, show a calm mist-colored placeholder block with text “Billede kommer snart” — do **not** break the build
 
@@ -416,7 +416,7 @@ import { listPublicImages } from '../lib/gallery';
 const homeImages = listPublicImages('hjem');
 const hero = homeImages[0];
 ---
-<BaseLayout title="Solvsten Bjerring" description="Velkommen til familiens hjemmeside.">
+<BaseLayout title="Sølvsten Bjerring" description="Velkommen til familiens hjemmeside.">
   <section class="relative">
     {hero ? (
       <img src={hero.src} alt="Vores hus" class="w-full max-h-[70vh] object-cover" />
@@ -427,7 +427,7 @@ const hero = homeImages[0];
     )}
   </section>
   <section class="mx-auto max-w-2xl px-4 py-12 text-center">
-    <h1 class="text-4xl md:text-5xl text-deep">Solvsten Bjerring</h1>
+    <h1 class="text-4xl md:text-5xl text-deep">Sølvsten Bjerring</h1>
     <p class="mt-4 text-lg text-sea leading-relaxed">
       En rolig side til familie og venner — med opdateringer og billeder fra vores hverdag,
       især Markus’ forløb.

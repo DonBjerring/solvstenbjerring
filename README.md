@@ -1,4 +1,4 @@
-# Solvsten Bjerring
+# Sølvsten Bjerring
 
 Familiehjemmeside til www.solvstenbjerring.dk — bygget med Astro og Tailwind CSS, hostet på GitHub Pages.
 
