@@ -12,8 +12,12 @@ export function listPublicImages(subdir: string): { src: string; name: string }[
     .readdirSync(dir)
     .filter((name) => IMAGE_EXT.has(path.extname(name).toLowerCase()))
     .sort((a, b) => a.localeCompare(b, 'da'))
-    .map((name) => ({
-      name,
-      src: `/images/${subdir.replace(/\\/g, '/')}/${name}`,
-    }));
+    .map((name) => {
+      const relative = `images/${subdir.replace(/\\/g, '/')}/${name}`;
+      const base = import.meta.env.BASE_URL ?? '/';
+      return {
+        name,
+        src: `${base}${relative}`,
+      };
+    });
 }

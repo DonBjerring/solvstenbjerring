@@ -1,17 +1,23 @@
 ---
+import { withBase } from '../lib/urls';
+
 const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
 
 function isActive(href: string): boolean {
-  if (href === '/') return pathname === '/';
-  return pathname === href || pathname.startsWith(href);
+  const full = withBase(href);
+  if (href === '/') {
+    return pathname === base || pathname === `${base.replace(/\/$/, '')}` || pathname === '/';
+  }
+  return pathname === full || pathname.startsWith(full);
 }
 
-const markusActive = pathname.startsWith('/markus');
+const markusActive = isActive('/markus/');
 ---
 
 <header class="border-b border-mist bg-sand/95 backdrop-blur-sm sticky top-0 z-40">
   <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between gap-4">
-    <a href="/" class="font-display text-xl text-deep hover:text-sea transition-colors">
+    <a href={withBase('/')} class="font-display text-xl text-deep hover:text-sea transition-colors">
       Solvsten Bjerring
     </a>
 
@@ -33,10 +39,10 @@ const markusActive = pathname.startsWith('/markus');
       <ul class="flex flex-col md:flex-row md:items-center gap-1 md:gap-6 text-base pt-2 md:pt-0">
         <li>
           <a
-            href="/"
+            href={withBase('/')}
             class:list={[
               'block py-2 md:py-0 transition-colors',
-              pathname === '/' ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+              isActive('/') && !markusActive ? 'text-deep font-medium' : 'text-sea hover:text-deep',
             ]}
           >
             Forside
@@ -44,7 +50,7 @@ const markusActive = pathname.startsWith('/markus');
         </li>
         <li>
           <a
-            href="/trivan/"
+            href={withBase('/trivan/')}
             class:list={[
               'block py-2 md:py-0 transition-colors',
               isActive('/trivan/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
@@ -66,23 +72,23 @@ const markusActive = pathname.startsWith('/markus');
             </summary>
             <ul class="pl-3 md:pl-0 md:absolute md:left-0 md:mt-2 md:min-w-[11rem] md:bg-foam md:border md:border-mist md:shadow-sm md:py-2 md:rounded-sm">
               <li>
-                <a href="/markus/" class="block md:px-4 py-2 text-sea hover:text-deep">Oversigt</a>
+                <a href={withBase('/markus/')} class="block md:px-4 py-2 text-sea hover:text-deep">Oversigt</a>
               </li>
               <li>
-                <a href="/markus/forloeb/" class="block md:px-4 py-2 text-sea hover:text-deep">Forløb</a>
+                <a href={withBase('/markus/forloeb/')} class="block md:px-4 py-2 text-sea hover:text-deep">Forløb</a>
               </li>
               <li>
-                <a href="/markus/galleri/" class="block md:px-4 py-2 text-sea hover:text-deep">Galleri</a>
+                <a href={withBase('/markus/galleri/')} class="block md:px-4 py-2 text-sea hover:text-deep">Galleri</a>
               </li>
               <li>
-                <a href="/markus/diplomer/" class="block md:px-4 py-2 text-sea hover:text-deep">Diplomer</a>
+                <a href={withBase('/markus/diplomer/')} class="block md:px-4 py-2 text-sea hover:text-deep">Diplomer</a>
               </li>
             </ul>
           </details>
         </li>
         <li>
           <a
-            href="/om-familien/"
+            href={withBase('/om-familien/')}
             class:list={[
               'block py-2 md:py-0 transition-colors',
               isActive('/om-familien/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
