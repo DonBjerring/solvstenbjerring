@@ -33,7 +33,7 @@ const markusActive = isActive('/markus/');
 
     <nav
       id="site-nav"
-      class="hidden md:block absolute md:static left-0 right-0 top-full bg-sand md:bg-transparent border-b border-mist md:border-0 px-4 pb-4 md:p-0"
+      class="hidden md:block absolute md:static left-0 right-0 top-full bg-sand md:bg-transparent border-b border-mist md:border-0 px-4 pb-4 md:p-0 z-50"
       aria-label="Hovedmenu"
     >
       <ul class="flex flex-col md:flex-row md:items-center gap-1 md:gap-6 text-base pt-2 md:pt-0">
@@ -59,18 +59,20 @@ const markusActive = isActive('/markus/');
             Trivan
           </a>
         </li>
-        <li>
-          <details class="group">
+        <li class="relative">
+          <details id="markus-menu" class="group">
             <summary
               class:list={[
-                'list-none cursor-pointer py-2 md:py-0 transition-colors flex items-center gap-1',
+                'list-none cursor-pointer py-2 md:py-0 transition-colors flex items-center gap-1 select-none',
                 markusActive ? 'text-deep font-medium' : 'text-sea hover:text-deep',
               ]}
             >
               Markus
               <span class="text-xs opacity-70" aria-hidden="true">▾</span>
             </summary>
-            <ul class="pl-3 md:pl-0 md:absolute md:left-0 md:mt-2 md:min-w-[11rem] md:bg-foam md:border md:border-mist md:shadow-sm md:py-2 md:rounded-sm">
+            <ul
+              class="pl-3 md:pl-0 md:absolute md:left-0 md:top-full md:mt-2 md:min-w-[11rem] md:bg-foam md:border md:border-mist md:shadow-sm md:py-2 md:rounded-sm md:z-50"
+            >
               <li>
                 <a href={withBase('/markus/')} class="block md:px-4 py-2 text-sea hover:text-deep">Oversigt</a>
               </li>
@@ -105,11 +107,29 @@ const markusActive = isActive('/markus/');
 <script>
   const toggle = document.getElementById('nav-toggle');
   const nav = document.getElementById('site-nav');
+  const markusMenu = document.getElementById('markus-menu');
 
-  toggle?.addEventListener('click', () => {
+  toggle?.addEventListener('click', (event) => {
+    event.stopPropagation();
     nav?.classList.toggle('hidden');
     const open = !nav?.classList.contains('hidden');
     toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    if (markusMenu instanceof HTMLDetailsElement && !markusMenu.contains(target)) {
+      markusMenu.open = false;
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (markusMenu instanceof HTMLDetailsElement) {
+      markusMenu.open = false;
+    }
   });
 </script>
 
