@@ -75,23 +75,23 @@ const markusActive = isActive('/markus/');
                 <a href={withBase('/markus/')} class="block md:px-4 py-2 text-sea hover:text-deep">Oversigt</a>
               </li>
               <li>
-                <a href={withBase('/markus/forloeb/')} class="block md:px-4 py-2 text-sea hover:text-deep">Forløb</a>
+                <a href={withBase('/markus/story/')} class="block md:px-4 py-2 text-sea hover:text-deep">Forløb</a>
               </li>
               <li>
-                <a href={withBase('/markus/galleri/')} class="block md:px-4 py-2 text-sea hover:text-deep">Galleri</a>
+                <a href={withBase('/markus/gallery/')} class="block md:px-4 py-2 text-sea hover:text-deep">Galleri</a>
               </li>
               <li>
-                <a href={withBase('/markus/diplomer/')} class="block md:px-4 py-2 text-sea hover:text-deep">Diplomer</a>
+                <a href={withBase('/markus/diplomas/')} class="block md:px-4 py-2 text-sea hover:text-deep">Diplomer</a>
               </li>
             </ul>
           </details>
         </li>
         <li>
           <a
-            href={withBase('/om-familien/')}
+            href={withBase('/about/')}
             class:list={[
               'block py-2 md:py-0 transition-colors',
-              isActive('/om-familien/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+              isActive('/about/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
             ]}
           >
             Om familien

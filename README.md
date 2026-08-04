@@ -18,7 +18,7 @@ npm run preview  # forhåndsvis det byggede site
 
 ## Tilføj en opdatering (Forløb)
 
-1. Opret en ny fil i `src/content/opdateringer/`, fx `foerste-uge.md`
+1. Opret en ny fil i `src/content/story/`, fx `first-week.md`
 2. Start filen med:
 
 ```markdown
@@ -31,10 +31,16 @@ summary: "En kort teaser til listen"
 Her skriver I brødteksten. I kan bruge **fed**, lister og billeder.
 ```
 
-3. Valgfrit billede i indlægget: læg filen i `public/images/markus/forloeb/` og indsæt i Markdown:
+3. Valgfrit billede i indlægget: læg filen i `public/images/markus/story/` og indsæt i Markdown (husk base-path på GitHub Pages):
 
 ```markdown
-![Beskrivelse](/images/markus/forloeb/mit-billede.jpg)
+![Beskrivelse](/solvstenbjerring/images/markus/story/my-photo.jpg)
+```
+
+Når det egne domæne er koblet på (`base: '/'`), brug i stedet:
+
+```markdown
+![Beskrivelse](/images/markus/story/my-photo.jpg)
 ```
 
 4. Commit og push til `main` — siden opdateres automatisk.
@@ -43,7 +49,7 @@ Her skriver I brødteksten. I kan bruge **fed**, lister og billeder.
 
 Læg billedfiler (`.jpg`, `.jpeg`, `.png`, `.webp`, …) i:
 
-`public/images/markus/galleri/`
+`public/images/markus/gallery/`
 
 De vises automatisk på Galleri-siden (sorteret efter filnavn). Ingen billedtekster i v1.
 
@@ -51,15 +57,15 @@ De vises automatisk på Galleri-siden (sorteret efter filnavn). Ingen billedteks
 
 Læg billeder i:
 
-`public/images/markus/diplomer/`
+`public/images/markus/diplomas/`
 
-## Forsidebillede (huset)
+## Forsidebillede
 
-Læg husbilledet i:
+Læg billedet i:
 
-`public/images/hjem/`
+`public/images/home/`
 
-Det første billede (alfabetisk efter filnavn) bruges på forsiden. Fx `hus.jpg`.
+Det første billede (alfabetisk efter filnavn) bruges på forsiden.
 
 ## Publicering (GitHub Pages)
 
@@ -78,7 +84,7 @@ Når DNS er klar:
 
 ## Menustruktur
 
-- Forside
-- Trivan (kommer senere)
-- Markus → Oversigt, Forløb, Galleri, Diplomer
-- Om familien
+- Forside → `/`
+- Trivan → `/trivan/`
+- Markus → `/markus/` (Forløb `/markus/story/`, Galleri `/markus/gallery/`, Diplomer `/markus/diplomas/`)
+- Om familien → `/about/`

@@ -4,7 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import UpdateCard from '../../../components/UpdateCard.astro';
 import { withBase } from '../../../lib/urls';
 
-const posts = (await getCollection('opdateringer')).sort(
+const posts = (await getCollection('story')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
@@ -23,7 +23,7 @@ const posts = (await getCollection('opdateringer')).sort(
               title={post.data.title}
               date={post.data.date}
               summary={post.data.summary}
-              href={withBase(`/markus/forloeb/${post.id}/`)}
+              href={withBase(`/markus/story/${post.id}/`)}
             />
           ))}
         </div>
