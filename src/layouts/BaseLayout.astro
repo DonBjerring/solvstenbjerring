@@ -7,11 +7,13 @@ import { withBase } from '../lib/urls';
 interface Props {
   title: string;
   description?: string;
+  flushFooter?: boolean;
 }
 
 const {
   title,
   description = 'Familiehjemmeside for familien Sølvsten Bjerring.',
+  flushFooter = false,
 } = Astro.props;
 const pageTitle = title === 'Sølvsten Bjerring' ? title : `${title} · Sølvsten Bjerring`;
 ---
@@ -36,6 +38,6 @@ const pageTitle = title === 'Sølvsten Bjerring' ? title : `${title} · Sølvste
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer flush={flushFooter} />
   </body>
 </html>
