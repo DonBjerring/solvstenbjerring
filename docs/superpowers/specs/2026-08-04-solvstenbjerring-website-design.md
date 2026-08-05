@@ -34,7 +34,7 @@ Astro static site + Tailwind CSS + Astro Content Collections for updates. Images
 
 | Label | Route | Role |
 |-------|-------|------|
-| Forløb | `/markus/forloeb/` | Timeline/list of all updates |
+| Indlæggelsesforløb | `/markus/forloeb/` | Timeline/list of all updates |
 | (single update) | `/markus/forloeb/[slug]/` | One update post |
 | Galleri | `/markus/galleri/` | Photo gallery |
 | Diplomer | `/markus/diplomer/` | Diploma/certificate images (gallery layout) |
@@ -45,7 +45,7 @@ Only a short explanation of the website and a large house image. No “latest up
 
 ## Content model
 
-### Updates (`forløb`)
+### Updates (`indlæggelsesforløb`)
 
 - Stored as Markdown in `src/content/opdateringer/`
 - Astro Content Collection with frontmatter:
@@ -164,7 +164,7 @@ No CMS, no database.
 
 - Responsive on mobile and desktop
 - Navigation works for all listed routes
-- Empty Forløb / Galleri / Diplomer are clear and calm
+- Empty Indlæggelsesforløb / Galleri / Diplomer are clear and calm
 - New update = one Markdown file + push
 - New gallery/diploma images = drop files in folder + push
 - Site builds statically and is deployable to GitHub Pages

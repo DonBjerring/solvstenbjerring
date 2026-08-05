@@ -16,7 +16,7 @@ npm run build    # byg til mappen dist/
 npm run preview  # forhåndsvis det byggede site
 ```
 
-## Tilføj en opdatering (Forløb)
+## Tilføj en opdatering (Indlæggelsesforløb)
 
 1. Opret en ny fil i `src/content/story/`, fx `first-week.md`
 2. Start filen med:
@@ -86,5 +86,5 @@ Når DNS er klar:
 
 - Forside → `/`
 - Trivan → `/trivan/`
-- Markus → `/markus/` (Forløb `/markus/story/`, Galleri `/markus/gallery/`, Diplomer `/markus/diplomas/`)
+- Markus → `/markus/` (Indlæggelsesforløb `/markus/story/`, Galleri `/markus/gallery/`, Diplomer `/markus/diplomas/`)
 - Om familien → `/about/`

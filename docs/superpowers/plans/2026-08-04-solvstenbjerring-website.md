@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a static Astro + Tailwind family website (Danish) for www.solvstenbjerring.dk with Forside, Trivan placeholder, Markus (Forløb / Galleri / Diplomer), and Om familien — empty content structures ready for Markdown and image drops, deployable to GitHub Pages.
+**Goal:** Build a static Astro + Tailwind family website (Danish) for www.solvstenbjerring.dk with Forside, Trivan placeholder, Markus (Indlæggelsesforløb / Galleri / Diplomer), and Om familien — empty content structures ready for Markdown and image drops, deployable to GitHub Pages.
 
 **Architecture:** Astro static site. Updates live in an Astro Content Collection (`src/content/opdateringer/`). Galleri and Diplomer images live under `public/images/...` and are discovered at build time via `fs.readdirSync`. Shared `BaseLayout` + `Header`/`Footer`. GitHub Actions publishes `dist/` to GitHub Pages.
 
@@ -11,9 +11,9 @@
 **Spec:** `docs/superpowers/specs/2026-08-04-solvstenbjerring-website-design.md`
 
 **Clarifications locked for implementation (from spec review):**
-- `/markus/` hub = short Danish intro + links to Forløb, Galleri, Diplomer
+- `/markus/` hub = short Danish intro + links to Indlæggelsesforløb, Galleri, Diplomer
 - Galleri/Diplomer = drop files into `public/images/...`; pages read the folder at build time; sort by filename; no captions in v1
-- Forløb Markdown may embed images via paths like `/images/markus/forloeb/fil.jpg` (store those files under `public/images/markus/forloeb/`)
+- Indlæggelsesforløb Markdown may embed images via paths like `/images/markus/forloeb/fil.jpg` (store those files under `public/images/markus/forloeb/`)
 
 ---
 
@@ -223,7 +223,7 @@ const pageTitle = title === 'Sølvsten Bjerring' ? title : `${title} · Sølvste
 
 - [ ] **Step 2: Create `src/components/Header.astro`**
 
-Desktop: links Forside, Trivan, Markus (details/summary or hover dropdown with Forløb, Galleri, Diplomer), Om familien.  
+Desktop: links Forside, Trivan, Markus (details/summary or hover dropdown with Indlæggelsesforløb, Galleri, Diplomer), Om familien.  
 Mobile: button toggles a panel with the same links (small inline `<script>` is fine).
 
 Brand text in header: **Sølvsten Bjerring** (link to `/`). Keep brand visible but not competing with page content — on Forside the page itself carries the main brand moment.
@@ -448,7 +448,7 @@ Short placeholder Danish paragraphs (editable later) about the family — a few 
 
 - [ ] **Step 4: `src/pages/markus/index.astro`**
 
-Short intro about Markus + three clear links to Forløb, Galleri, Diplomer.
+Short intro about Markus + three clear links to Indlæggelsesforløb, Galleri, Diplomer.
 
 - [ ] **Step 5: `src/pages/markus/forloeb/index.astro`**
 
@@ -462,10 +462,10 @@ const posts = (await getCollection('opdateringer')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
-<BaseLayout title="Forløb" description="Opdateringer om Markus’ forløb.">
+<BaseLayout title="Indlæggelsesforløb" description="Opdateringer om Markus’ indlæggelsesforløb.">
   <div class="mx-auto max-w-3xl px-4 py-12">
-    <h1 class="text-4xl text-deep">Forløb</h1>
-    <p class="mt-3 text-sea">Løbende opdateringer om Markus.</p>
+    <h1 class="text-4xl text-deep">Indlæggelsesforløb</h1>
+    <p class="mt-3 text-sea">Markus' indlæggelsesforløb i hovedtræk.</p>
     {posts.length === 0 ? (
       <p class="mt-10 text-sea text-lg">Ingen opdateringer endnu.</p>
     ) : (
@@ -510,7 +510,7 @@ const formatted = post.data.date.toLocaleDateString('da-DK', {
 <BaseLayout title={post.data.title} description={post.data.summary}>
   <article class="mx-auto max-w-2xl px-4 py-12">
     <p class="text-sm text-sea">
-      <a href="/markus/forloeb/" class="hover:underline">← Forløb</a>
+      <a href="/markus/forloeb/" class="hover:underline">← Indlæggelsesforløb</a>
     </p>
     <time class="mt-6 block text-sm text-sea" datetime={post.data.date.toISOString()}>
       {formatted}
@@ -532,7 +532,7 @@ Use `listPublicImages('markus/galleri')` / `listPublicImages('markus/diplomer')`
 - [ ] **Step 8: Build verification**
 
 Run: `npm run build`  
-Expected: Success; `dist/` contains `index.html`, `trivan/`, `om-familien/`, `markus/`, `markus/forloeb/`, `markus/galleri/`, `markus/diplomer/`. No forløb slug pages until posts exist (OK).
+Expected: Success; `dist/` contains `index.html`, `trivan/`, `om-familien/`, `markus/`, `markus/forloeb/`, `markus/galleri/`, `markus/diplomer/`. No Indlæggelsesforløb slug pages until posts exist (OK).
 
 - [ ] **Step 9: Commit**
 
@@ -626,7 +626,7 @@ git commit -m "Add GitHub Pages workflow and content authoring README"
 - [ ] **Step 2: If any fix was needed, commit the fix**
 
 ```bash
-git commit -m "Fix forløb rendering edge case"
+git commit -m "Fix indlæggelsesforløb rendering edge case"
 ```
 
 ---
