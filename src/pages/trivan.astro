@@ -7,31 +7,31 @@ const photo = images[0];
 ---
 
 <BaseLayout title="Trivan" description="Trivan" flushFooter>
-  <section class="mx-auto max-w-5xl px-4">
-    {
-      photo ? (
-        <div class="relative overflow-hidden">
-          <img
-            src={photo.src}
-            alt=""
-            class="block w-full h-auto"
-          />
-          <div class="absolute inset-0 bg-gradient-to-b from-deep/50 via-deep/15 to-transparent" aria-hidden="true" />
-          <div class="absolute inset-x-0 top-0 px-6 pt-8 md:px-10 md:pt-12">
+  {
+    photo ? (
+      <section class="relative">
+        <div class="mx-auto max-w-5xl px-4">
+          <div class="relative overflow-hidden">
+            <img src={photo.src} alt="" class="block w-full h-auto" />
+            <div class="absolute inset-0 bg-gradient-to-b from-deep/50 via-deep/15 to-transparent" aria-hidden="true" />
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-x-0 top-0">
+          <div class="mx-auto max-w-3xl px-4 pt-8 md:pt-12 pointer-events-auto">
             <h1 class="text-4xl md:text-5xl text-foam">Trivan</h1>
-            <p class="mt-4 text-lg text-foam/90 leading-relaxed max-w-xl">
+            <p class="mt-4 text-lg text-foam/90 leading-relaxed">
               Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
             </p>
           </div>
         </div>
-      ) : (
-        <div class="py-12">
-          <h1 class="text-4xl text-deep">Trivan</h1>
-          <p class="mt-6 text-lg text-sea leading-relaxed max-w-xl">
-            Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
-          </p>
-        </div>
-      )
-    }
-  </section>
+      </section>
+    ) : (
+      <section class="mx-auto max-w-3xl px-4 py-12">
+        <h1 class="text-4xl text-deep">Trivan</h1>
+        <p class="mt-6 text-lg text-sea leading-relaxed">
+          Trine og Ivan fandt sammen den 7. maj 2010. Det er alt du behøver at vide for nu.
+        </p>
+      </section>
+    )
+  }
 </BaseLayout>
