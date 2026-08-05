@@ -59,6 +59,16 @@ Læg billeder i:
 
 `public/images/markus/diplomas/`
 
+Nummerér filerne for at styre rækkefølgen, fx:
+
+```
+01-first.jpg
+02-second.jpg
+03-third.jpg
+```
+
+De sorteres efter filnavn. Klik på et billede for at se det større.
+
 ## Forsidebillede
 
 Læg billedet i:

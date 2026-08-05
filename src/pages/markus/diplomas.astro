@@ -9,9 +9,9 @@ const images = listPublicImages('markus/diplomas');
 <BaseLayout title="Diplomer" description="Diplomer og certifikater.">
   <div class="mx-auto max-w-5xl px-4 py-12">
     <h1 class="text-4xl text-deep">Diplomer</h1>
-    <p class="mt-3 text-sea">Diplomer og certifikater som billeder.</p>
+    <p class="mt-3 text-sea">Diplomer, som den seje dreng har samlet til sig gennem forløbet.</p>
     <div class="mt-8">
-      <GalleryGrid images={images} emptyMessage="Ingen diplomer endnu." />
+      <GalleryGrid images={images} emptyMessage="Ingen diplomer endnu." lightbox />
     </div>
   </div>
 </BaseLayout>

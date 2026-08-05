@@ -2,9 +2,10 @@
 interface Props {
   images: { src: string; name: string }[];
   emptyMessage: string;
+  lightbox?: boolean;
 }
 
-const { images, emptyMessage } = Astro.props;
+const { images, emptyMessage, lightbox = false } = Astro.props;
 ---
 
 {
@@ -12,18 +13,92 @@ const { images, emptyMessage } = Astro.props;
     <p class="text-sea text-lg py-12">{emptyMessage}</p>
   ) : (
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0">
-      {images.map((image) => (
+      {images.map((image, index) => (
         <li>
           <figure>
-            <img
-              src={image.src}
-              alt=""
-              class="w-full h-auto object-cover rounded-sm"
-              loading="lazy"
-            />
+            {lightbox ? (
+              <button
+                type="button"
+                class="block w-full p-0 border-0 bg-transparent cursor-zoom-in"
+                data-lightbox-trigger
+                data-lightbox-index={index}
+                aria-label="Vis billede større"
+              >
+                <img
+                  src={image.src}
+                  alt=""
+                  class="w-full h-auto object-cover rounded-sm"
+                  loading="lazy"
+                />
+              </button>
+            ) : (
+              <img
+                src={image.src}
+                alt=""
+                class="w-full h-auto object-cover rounded-sm"
+                loading="lazy"
+              />
+            )}
           </figure>
         </li>
       ))}
     </ul>
+  )
+}
+
+{
+  lightbox && images.length > 0 && (
+    <dialog
+      id="gallery-lightbox"
+      class="fixed inset-0 m-0 max-w-none max-h-none w-full h-full bg-deep/85 p-4 md:p-8 backdrop:bg-transparent"
+    >
+      <form method="dialog" class="absolute inset-0">
+        <button type="submit" class="absolute inset-0 w-full h-full cursor-zoom-out border-0 bg-transparent" aria-label="Luk" />
+      </form>
+      <div class="relative z-10 flex h-full items-center justify-center pointer-events-none">
+        <img
+          id="gallery-lightbox-image"
+          src={images[0].src}
+          alt=""
+          class="max-w-full max-h-full object-contain pointer-events-auto rounded-sm shadow-lg"
+        />
+      </div>
+      <form method="dialog" class="absolute top-4 right-4 z-20">
+        <button
+          type="submit"
+          class="rounded-sm border border-foam/40 bg-deep/60 px-3 py-2 text-sm text-foam hover:bg-deep/80"
+        >
+          Luk
+        </button>
+      </form>
+    </dialog>
+  )
+}
+
+{
+  lightbox && images.length > 0 && (
+    <script define:vars={{ imageSrcs: images.map((image) => image.src) }}>
+      const dialog = document.getElementById('gallery-lightbox');
+      const lightboxImage = document.getElementById('gallery-lightbox-image');
+      const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+
+      if (dialog instanceof HTMLDialogElement && lightboxImage instanceof HTMLImageElement) {
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            const index = Number(trigger.getAttribute('data-lightbox-index') ?? '0');
+            const src = imageSrcs[index];
+            if (!src) return;
+            lightboxImage.src = src;
+            dialog.showModal();
+          });
+        });
+
+        dialog.addEventListener('click', (event) => {
+          if (event.target === dialog) {
+            dialog.close();
+          }
+        });
+      }
+    </script>
   )
 }
