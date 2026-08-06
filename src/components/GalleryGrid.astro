@@ -15,11 +15,16 @@ const { images, emptyMessage, lightbox = false } = Astro.props;
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0">
       {images.map((image, index) => (
         <li>
-          <figure>
+          <figure class="relative overflow-hidden rounded-sm bg-mist min-h-48">
+            <div
+              class="gallery-skeleton absolute inset-0 z-0"
+              data-gallery-skeleton
+              aria-hidden="true"
+            />
             {lightbox ? (
               <button
                 type="button"
-                class="block w-full p-0 border-0 bg-transparent cursor-zoom-in"
+                class="relative z-10 block w-full p-0 border-0 bg-transparent cursor-zoom-in"
                 data-lightbox-trigger
                 data-lightbox-index={index}
                 aria-label="Vis billede større"
@@ -27,16 +32,18 @@ const { images, emptyMessage, lightbox = false } = Astro.props;
                 <img
                   src={image.src}
                   alt=""
-                  class="w-full h-auto object-cover rounded-sm"
+                  class="gallery-image w-full h-auto object-cover opacity-0 transition-opacity duration-500"
                   loading="lazy"
+                  data-gallery-image
                 />
               </button>
             ) : (
               <img
                 src={image.src}
                 alt=""
-                class="w-full h-auto object-cover rounded-sm"
+                class="gallery-image relative z-10 w-full h-auto object-cover opacity-0 transition-opacity duration-500"
                 loading="lazy"
+                data-gallery-image
               />
             )}
           </figure>
@@ -76,29 +83,82 @@ const { images, emptyMessage, lightbox = false } = Astro.props;
 }
 
 {
-  lightbox && images.length > 0 && (
-    <script define:vars={{ imageSrcs: images.map((image) => image.src) }}>
-      const dialog = document.getElementById('gallery-lightbox');
-      const lightboxImage = document.getElementById('gallery-lightbox-image');
-      const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+  images.length > 0 && (
+    <script define:vars={{ imageSrcs: images.map((image) => image.src), lightboxEnabled: lightbox }}>
+      function revealImage(img) {
+        if (!(img instanceof HTMLImageElement)) return;
+        img.classList.add('is-loaded');
+        const skeleton = img.closest('figure')?.querySelector('[data-gallery-skeleton]');
+        if (skeleton instanceof HTMLElement) {
+          skeleton.classList.add('is-hidden');
+        }
+      }
 
-      if (dialog instanceof HTMLDialogElement && lightboxImage instanceof HTMLImageElement) {
-        triggers.forEach((trigger) => {
-          trigger.addEventListener('click', () => {
-            const index = Number(trigger.getAttribute('data-lightbox-index') ?? '0');
-            const src = imageSrcs[index];
-            if (!src) return;
-            lightboxImage.src = src;
-            dialog.showModal();
+      document.querySelectorAll('[data-gallery-image]').forEach((img) => {
+        if (!(img instanceof HTMLImageElement)) return;
+        if (img.complete && img.naturalWidth > 0) {
+          revealImage(img);
+        } else {
+          img.addEventListener('load', () => revealImage(img), { once: true });
+          img.addEventListener('error', () => revealImage(img), { once: true });
+        }
+      });
+
+      if (lightboxEnabled) {
+        const dialog = document.getElementById('gallery-lightbox');
+        const lightboxImage = document.getElementById('gallery-lightbox-image');
+        const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+
+        if (dialog instanceof HTMLDialogElement && lightboxImage instanceof HTMLImageElement) {
+          triggers.forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+              const index = Number(trigger.getAttribute('data-lightbox-index') ?? '0');
+              const src = imageSrcs[index];
+              if (!src) return;
+              lightboxImage.src = src;
+              dialog.showModal();
+            });
           });
-        });
 
-        dialog.addEventListener('click', (event) => {
-          if (event.target === dialog) {
-            dialog.close();
-          }
-        });
+          dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) {
+              dialog.close();
+            }
+          });
+        }
       }
     </script>
   )
 }
+
+<style>
+  .gallery-skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-mist) 0%,
+      var(--color-sand) 45%,
+      var(--color-mist) 90%
+    );
+    background-size: 200% 100%;
+    animation: gallery-shimmer 1.4s ease-in-out infinite;
+  }
+
+  .gallery-skeleton.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .gallery-image.is-loaded {
+    opacity: 1;
+  }
+
+  @keyframes gallery-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+</style>
