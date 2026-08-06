@@ -3,10 +3,18 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import UpdateCard from '../../../components/UpdateCard.astro';
 import { withBase } from '../../../lib/urls';
+import { resolveStoryDate } from '../../../lib/story';
 
-const posts = (await getCollection('story')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = (await getCollection('story'))
+  .map((post) => {
+    const date =
+      resolveStoryDate({ date: post.data.date, image: post.data.image }) ??
+      new Date(0);
+    const title = post.data.title?.trim() || undefined;
+    const summary = post.data.summary ?? post.data.text ?? '';
+    return { post, date, title, summary };
+  })
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf());
 ---
 
 <BaseLayout title="Indlæggelsesforløb" description="Opdateringer om Markus’ indlæggelsesforløb.">
@@ -18,11 +26,11 @@ const posts = (await getCollection('story')).sort(
         <p class="mt-10 text-sea text-lg">Ingen opdateringer endnu.</p>
       ) : (
         <div class="mt-8">
-          {posts.map((post) => (
+          {posts.map(({ post, date, title, summary }) => (
             <UpdateCard
-              title={post.data.title}
-              date={post.data.date}
-              summary={post.data.summary}
+              title={title}
+              date={date}
+              summary={summary}
               href={withBase(`/markus/story/${post.id}/`)}
             />
           ))}

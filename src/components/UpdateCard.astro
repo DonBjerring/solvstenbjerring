@@ -1,12 +1,13 @@
 ---
 interface Props {
-  title: string;
+  title?: string;
   date: Date;
   summary: string;
   href: string;
 }
 
 const { title, date, summary, href } = Astro.props;
+const heading = title?.trim() || null;
 const formatted = date.toLocaleDateString('da-DK', {
   year: 'numeric',
   month: 'long',
@@ -19,6 +20,6 @@ const formatted = date.toLocaleDateString('da-DK', {
   class="block py-6 border-b border-mist hover:bg-mist/40 transition-colors -mx-2 px-2 rounded-sm"
 >
   <time class="text-sm text-sea" datetime={date.toISOString()}>{formatted}</time>
-  <h2 class="mt-1 text-2xl text-deep">{title}</h2>
-  <p class="mt-2 text-deep/80 leading-relaxed">{summary}</p>
+  {heading && <h2 class="mt-1 text-2xl text-deep">{heading}</h2>}
+  {summary && <p class:list={[heading ? 'mt-2' : 'mt-1', 'text-deep/80 leading-relaxed']}>{summary}</p>}
 </a>

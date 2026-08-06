@@ -18,32 +18,24 @@ npm run preview  # forhåndsvis det byggede site
 
 ## Tilføj en opdatering (Indlæggelsesforløb)
 
-1. Opret en ny fil i `src/content/story/`, fx `first-week.md`
-2. Start filen med:
+1. Læg evt. billede i `public/images/markus/story/` (gerne `YYYYMMDD-HHMMSS.jpg` via rename-scriptet)
+2. Opret en fil i `src/content/story/`, fx `foerste-dag.md`:
 
 ```markdown
 ---
-title: "Første uge"
-date: 2026-08-01
-summary: "En kort teaser til listen"
+image: 20260513-160309.jpg
+text: |
+  Her er teksten til indlægget.
+  Den kan fylde flere linjer.
+# title: "Valgfri overskrift"
+# summary: "Kort teaser til listen"
+# date: 2026-05-13              # kun nødvendigt hvis der ikke er billede
 ---
-
-Her skriver I brødteksten. I kan bruge **fed**, lister og billeder.
 ```
 
-3. Valgfrit billede i indlægget: læg filen i `public/images/markus/story/` og indsæt i Markdown (husk base-path på GitHub Pages):
+Alle felter er valgfrie. `title` er kun en overskrift — uden den vises kun datoen (fra billedet).
 
-```markdown
-![Beskrivelse](/solvstenbjerring/images/markus/story/my-photo.jpg)
-```
-
-Når det egne domæne er koblet på (`base: '/'`), brug i stedet:
-
-```markdown
-![Beskrivelse](/images/markus/story/my-photo.jpg)
-```
-
-4. Commit og push til `main` — siden opdateres automatisk.
+3. Commit og push til `main` — siden opdateres automatisk.
 
 ## Tilføj billeder til galleri
 

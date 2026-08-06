@@ -1,0 +1,68 @@
+---
+import { withBase } from '../lib/urls';
+import {
+  formatStoryTitle,
+  resolveStoryDate,
+  storyImageSrc,
+} from '../lib/story';
+
+interface Props {
+  /** Filename in public/images/markus/story/, e.g. 20260513-160309.jpg */
+  image?: string;
+  /** Optional body text */
+  text?: string;
+  /** Optional title — omitted entirely when not set */
+  title?: string;
+  /** Optional date override when there is no image */
+  date?: Date;
+}
+
+const { image, text, title, date: dateOverride } = Astro.props;
+
+const date = resolveStoryDate({ date: dateOverride, image });
+const dateLabel = date ? formatStoryTitle(date) : null;
+const imageSrc = image ? withBase(storyImageSrc(image)) : null;
+const heading = title?.trim() || null;
+---
+
+<article class="story-post">
+  {
+    date && dateLabel && (
+      <time class="block text-sm text-sea" datetime={date.toISOString()}>
+        {dateLabel}
+      </time>
+    )
+  }
+
+  {
+    heading && (
+      <h1 class:list={[date ? 'mt-2' : '', 'text-4xl text-deep']}>{heading}</h1>
+    )
+  }
+
+  {
+    imageSrc && (
+      <figure class={heading || date ? 'mt-8' : undefined}>
+        <img
+          src={imageSrc}
+          alt=""
+          class="w-full h-auto rounded-sm"
+          loading="lazy"
+        />
+      </figure>
+    )
+  }
+
+  {
+    text && (
+      <div
+        class:list={[
+          imageSrc || heading || date ? 'mt-8' : '',
+          'prose prose-lg max-w-none text-deep/90 leading-relaxed whitespace-pre-line',
+        ]}
+      >
+        {text}
+      </div>
+    )
+  }
+</article>
