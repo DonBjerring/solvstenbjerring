@@ -53,6 +53,20 @@ Læg billedfiler (`.jpg`, `.jpeg`, `.png`, `.webp`, …) i:
 
 De vises automatisk på Galleri-siden (sorteret efter filnavn). Ingen billedtekster i v1.
 
+### Omdøb efter dato
+
+For ens filnavne (`YYYYMMDD-HHMMSS.jpg`):
+
+```bash
+# Se hvad der vil ske
+python3 scripts/rename-images-by-date.py public/images/markus/gallery
+
+# Udfør omdøbning
+python3 scripts/rename-images-by-date.py public/images/markus/gallery --apply
+```
+
+Virker også på andre mapper, fx `public/images/markus/diplomas`.
+
 ## Tilføj diplomer
 
 Læg billeder i:
