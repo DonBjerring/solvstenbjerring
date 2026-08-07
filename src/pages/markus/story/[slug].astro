@@ -9,14 +9,27 @@ import {
 } from '../../../lib/story';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('story');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
+  const ordered = (await getCollection('story'))
+    .map((post) => {
+      const date =
+        resolveStoryDate({ date: post.data.date, image: post.data.image }) ??
+        new Date(0);
+      const title = post.data.title?.trim() || formatStoryTitle(date);
+      return { post, date, title };
+    })
+    .sort((a, b) => a.date.valueOf() - b.date.valueOf());
+
+  return ordered.map((entry, index) => ({
+    params: { slug: entry.post.id },
+    props: {
+      post: entry.post,
+      prev: index > 0 ? ordered[index - 1] : null,
+      next: index < ordered.length - 1 ? ordered[index + 1] : null,
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
 
 const date = resolveStoryDate({ date: post.data.date, image: post.data.image }) ?? undefined;
@@ -44,6 +57,38 @@ const hasMarkdownBody = Boolean(post.body?.trim());
         <div class="prose prose-lg mt-8 max-w-none text-deep/90 leading-relaxed">
           <Content />
         </div>
+      )
+    }
+
+    {
+      (prev || next) && (
+        <nav
+          class="mt-12 flex items-start justify-between gap-6 border-t border-mist pt-8"
+          aria-label="Indlægsnavigation"
+        >
+          {prev ? (
+            <a
+              href={withBase(`/markus/story/${prev.post.id}/`)}
+              class="group max-w-[45%] text-left transition-colors"
+            >
+              <span class="block text-sm text-sea group-hover:text-deep">← Forrige</span>
+              <span class="mt-1 block text-deep group-hover:text-sea leading-snug">{prev.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <a
+              href={withBase(`/markus/story/${next.post.id}/`)}
+              class="group ml-auto max-w-[45%] text-right transition-colors"
+            >
+              <span class="block text-sm text-sea group-hover:text-deep">Næste →</span>
+              <span class="mt-1 block text-deep group-hover:text-sea leading-snug">{next.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
       )
     }
   </div>
