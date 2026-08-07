@@ -88,15 +88,9 @@ Det første billede (alfabetisk efter filnavn) bruges på forsiden.
 1. Push til `main`
 2. På GitHub: **Settings → Pages → Source: GitHub Actions**
 3. Brug kun workflowen **Deploy to GitHub Pages** (`.github/workflows/deploy.yml`) — ikke “Deploy static content”
-4. Siden ligger midlertidigt på: `https://donbjerring.github.io/solvstenbjerring/`
+4. Siden ligger på: https://sølvstenbjerring.dk (`www` redirecter hertil)
 
-### Domæne senere (`www.solvstenbjerring.dk`)
-
-Når DNS er klar:
-
-1. I `astro.config.mjs`: sæt `base: '/'` og `site: 'https://www.solvstenbjerring.dk'`
-2. Opret filen `CNAME` i repo-roden med indholdet `www.solvstenbjerring.dk`
-3. Peg DNS hos domæneudbyderen til GitHub Pages
+Custom domain er sat via `public/CNAME` og DNS hos DanDomain (A-records til GitHub Pages + CNAME for `www` → `donbjerring.github.io`).
 
 ## Menustruktur
 
