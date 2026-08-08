@@ -1,6 +1,8 @@
 ---
 title: Du er min øjesten
 section: songs
+melody: Sven Gyldmark
+lyrics: Victor Skaarup
 ---
 
 Hør, hvor lærken slår sin trille for den gyldne sol.
