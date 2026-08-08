@@ -1,7 +1,7 @@
 ---
 title: Tre små soldater
 section: songs
-note: Vores version af Tre små soldater. 
+note: Vores version af Tre små soldater. En af Markus' favoritter har han sagt. 
 ---
 
 1.

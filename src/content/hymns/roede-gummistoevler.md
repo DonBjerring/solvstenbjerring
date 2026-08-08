@@ -3,6 +3,7 @@ title: Røde gummistøvler
 section: songs
 melody: Elisabeth Gjerluff Nielsen
 lyrics: Elisabeth Gjerluff Nielsen
+note: Fun fact - Trine ejer røde gummistøvler.
 ---
 
 Sutsko og futsko
