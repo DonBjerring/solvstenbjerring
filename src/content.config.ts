@@ -18,4 +18,19 @@ const story = defineCollection({
   }),
 });
 
-export const collections = { story };
+const hymns = defineCollection({
+  loader: glob({ base: './src/content/hymns', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    /** `songs` = almindelige sange, `lullabies` = godnatsange */
+    section: z.enum(['songs', 'lullabies']),
+    /** Optional composer / melody credit */
+    melody: z.string().optional(),
+    /** Optional lyricist credit */
+    lyrics: z.string().optional(),
+    /** Optional short personal note */
+    note: z.string().optional(),
+  }),
+});
+
+export const collections = { story, hymns };

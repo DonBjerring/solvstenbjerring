@@ -1,0 +1,35 @@
+---
+title: Puff
+section: songs
+melody: Peter Yarrow
+lyrics: Peter Borgsten
+---
+
+Puff hvor kan man finde drager som dig
+Du ligger på en klippeø
+og venter kun på mig
+Du kan li´at lege, du var min ven
+men kære puff vi kommer aldrig til at leg´ igen
+
+Puff da jeg var lille, red jeg på dig
+jeg sad på halen, stor og bred
+du svømmede med mig
+Alle sænker flaget hilser på dig
+vi fandt en skat med sølv og guld - og delte du og jeg
+
+Puff vi sad på stranden, solen gik ned
+en havskildpadde gemmer sine æg et hemmeligt sted
+Tropevinden suser, natten bliver sort
+vi føler begge to vi sidder nær ved lykkens port
+
+Puff på vores rejse så vi et slot
+hvor prinser og prinsesser boede
+Nej hvor var det flot
+Kongen og hans dronning gav mig en ring
+men ringen var en tryllering - nu er den ingenting
+
+Puff du er alene, alt er forbi
+for drager lever tusind år
+hvor er min fantasi
+Du kan li´at lege du var min ven
+men kære puff jeg bli´r jo aldrig som et barn igen

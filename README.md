@@ -37,6 +37,28 @@ Alle felter er valgfrie. `title` er kun en overskrift — uden den vises kun dat
 
 3. Commit og push til `main` — siden opdateres automatisk.
 
+## Tilføj en sang (Sanghæfte)
+
+1. Opret en fil i `src/content/hymns/`, fx `elefantens-vuggevise.md`:
+
+```markdown
+---
+title: Elefantens vuggevise
+section: lullabies   # songs = Sange, lullabies = Godnatsange
+melody: Navn på komponist   # valgfri
+lyrics: Navn på tekstforfatter  # valgfri
+note: Godnatsang            # valgfri personlig note
+---
+
+Første linje
+Anden linje
+Tredje linje
+```
+
+`section` skal være `songs` eller `lullabies`. Enkelte linjeskift i teksten bevares på sangsiden. `melody` og `lyrics` vises som “Melodi: … · Tekst: …” under titlen.
+
+2. Commit og push til `main`.
+
 ## Tilføj billeder til galleri
 
 Læg billedfiler (`.jpg`, `.jpeg`, `.png`, `.webp`, …) i:
@@ -97,4 +119,5 @@ Custom domain er sat via `public/CNAME` og DNS hos DanDomain (A-records til GitH
 - Forside → `/`
 - Trivan → `/trivan/`
 - Markus → `/markus/` (Indlæggelsesforløb `/markus/story/`, Galleri `/markus/gallery/`, Diplomer `/markus/diplomas/`)
+- Sanghæfte → `/hymns/`
 - Om familien → `/about/`

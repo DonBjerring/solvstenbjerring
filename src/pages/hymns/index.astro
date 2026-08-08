@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/urls';
+
+const hymns = await getCollection('hymns');
+
+function byTitleDa(a: { data: { title: string } }, b: { data: { title: string } }) {
+  return a.data.title.localeCompare(b.data.title, 'da');
+}
+
+const songs = hymns.filter((h) => h.data.section === 'songs').sort(byTitleDa);
+const lullabies = hymns.filter((h) => h.data.section === 'lullabies').sort(byTitleDa);
+---
+
+<BaseLayout
+  title="Sanghæfte"
+  description="Indeholder bl.a. de sange vi synger for Markus."
+>
+  <div class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-4xl text-deep">Sanghæfte</h1>
+    <p class="mt-3 text-sea">
+      Indeholder bl.a. de sange vi synger for Markus.
+    </p>
+
+    {
+      hymns.length === 0 ? (
+        <p class="mt-10 text-sea text-lg">Ingen sange endnu.</p>
+      ) : (
+        <div class="mt-10 space-y-10">
+          {songs.length > 0 && (
+            <section>
+              <h2 class="text-2xl text-deep">Sange</h2>
+              <ol class="mt-3 list-none">
+                {songs.map((hymn, index) => (
+                  <li>
+                    <a
+                      href={withBase(`/hymns/${hymn.id}/`)}
+                      class="flex gap-3 py-2.5 border-b border-mist hover:bg-mist/40 transition-colors -mx-2 px-2 rounded-sm"
+                    >
+                      <span class="w-6 shrink-0 text-sea tabular-nums">{index + 1}.</span>
+                      <span class="text-lg text-deep">{hymn.data.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          {lullabies.length > 0 && (
+            <section>
+              <h2 class="text-2xl text-deep">Godnatsange</h2>
+              <ol class="mt-3 list-none" start={songs.length + 1}>
+                {lullabies.map((hymn, index) => (
+                  <li>
+                    <a
+                      href={withBase(`/hymns/${hymn.id}/`)}
+                      class="flex gap-3 py-2.5 border-b border-mist hover:bg-mist/40 transition-colors -mx-2 px-2 rounded-sm"
+                    >
+                      <span class="w-6 shrink-0 text-sea tabular-nums">{songs.length + index + 1}.</span>
+                      <span class="text-lg text-deep">{hymn.data.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

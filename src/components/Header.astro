@@ -90,6 +90,17 @@ const markusActive = isActive('/markus/');
         </li>
         <li>
           <a
+            href={withBase('/hymns/')}
+            class:list={[
+              'block py-2 md:py-0 transition-colors',
+              isActive('/hymns/') ? 'text-deep font-medium' : 'text-sea hover:text-deep',
+            ]}
+          >
+            Sanghæfte
+          </a>
+        </li>
+        <li>
+          <a
             href={withBase('/about/')}
             class:list={[
               'block py-2 md:py-0 transition-colors',
