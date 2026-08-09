@@ -166,12 +166,12 @@ const lyrics = hymn.body?.trim() ?? '';
   const speedButtons = document.querySelectorAll('[data-scroll-speed]');
   const wakeLockSupported = 'wakeLock' in navigator;
 
-  /** Pixels per second. `none` disables autoscroll. */
+  /** Pixels per second. Slow matches the previous smooth pace; medium/fast stay farther apart for mobile. */
   const SPEEDS = {
     none: 0,
     slow: 12,
-    medium: 22,
-    fast: 40,
+    medium: 25,
+    fast: 50,
   };
 
   if (toggle instanceof HTMLInputElement && controls instanceof HTMLElement) {
