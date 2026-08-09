@@ -3,6 +3,7 @@ title: Livstræet
 section: songs
 melody: Hans Holm
 lyrics: Erik Lindebjerg
+audio: livstræet.mp3
 ---
 
 Der er så meget, der kan trykke,

@@ -4,6 +4,7 @@ section: lullabies
 melody: Ole Jacobsen
 lyrics: Peter Lemche
 note: Fun fact - melodien til "Der bor en bager" passer fuldstændigt til teksten. 
+audio: den-lille-ole.mp3
 ---
 
 Den lille Ole med paraplyen

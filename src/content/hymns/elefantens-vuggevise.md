@@ -3,6 +3,7 @@ title: Elefantens vuggevise
 section: lullabies
 melody: Mogens Jermiin Nissen
 lyrics: Harald H. Lund
+audio: elefantens-vuggevise.mp3
 ---
 
 Nu tændes der stjerner på himlens blå,

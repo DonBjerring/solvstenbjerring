@@ -3,6 +3,7 @@ title: Busters sang
 section: songs
 melody: Nanna Lüders Jensen
 lyrics: Nanna Lüders Jensen
+audio: busters-sang.mp3
 ---
 
 Stille stille stille nu står solen op

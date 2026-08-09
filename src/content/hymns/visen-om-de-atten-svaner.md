@@ -4,6 +4,7 @@ section: songs
 melody: Benny Andersen og Bjørn Ulvæus
 lyrics: Poul Sørensen
 note: En af Ivans favoritter
+audio: visen-om-de-atten-svaner.mp3
 ---
 
 Og jeg drømte om atten svaner i nat

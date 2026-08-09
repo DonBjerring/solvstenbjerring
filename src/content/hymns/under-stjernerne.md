@@ -3,6 +3,7 @@ title: Under stjernerne på himlen
 section: lullabies
 melody: Tommy Seebach
 lyrics: Keld Heick
+audio: under-stjernerne.mp3
 ---
 
 Jeg sætter mig på kanten af din seng,

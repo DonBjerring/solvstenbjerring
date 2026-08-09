@@ -4,6 +4,7 @@ section: songs
 melody: Per Warming
 lyrics: Jens Rosendal
 note: Tempoet er op til debat.
+audio: forelskelsessang.mp3
 ---
 
 Du kom med alt hvad der var dig

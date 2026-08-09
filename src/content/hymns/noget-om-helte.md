@@ -4,6 +4,7 @@ section: songs
 melody: Robert Normann
 lyrics: Halfdan Rasmussen
 note: En af Ivans favoritter.
+audio: noget-om-helte.mp3
 ---
 
 Livet er en morgengave, sjælen er et pilgrimskor.             

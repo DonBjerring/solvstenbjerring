@@ -3,6 +3,7 @@ title: Jeg ved en lærkerede
 section: songs
 melody: Carl Nielsen
 lyrics: Harald Bergstedt
+audio: jeg-ved-en-laerkerede.mp3
 ---
 
 Jeg ved en lærkerede

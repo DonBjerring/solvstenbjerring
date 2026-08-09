@@ -3,6 +3,7 @@ title: Du, som har tændt millioner af stjerner
 section: lullabies
 melody: Erik Sommer
 lyrics: Johannes Johansen
+audio: du-som-har-taendt.mp3
 ---
 
 Du, som har tændt millioner af stjerner,

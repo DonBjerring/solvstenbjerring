@@ -4,6 +4,7 @@ section: songs
 melody: Finn Jørgensen
 lyrics: Kirsten og Finn Jørgensen
 note: Kan også bruges som godnatsang
+audio: sensommervise.mp3
 ---
 
 Æbler lyser rødt på træernes grene,

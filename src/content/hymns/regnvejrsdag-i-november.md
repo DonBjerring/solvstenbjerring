@@ -4,6 +4,7 @@ section: songs
 melody: Pia Raug
 lyrics: Ebba Munk Pedersen
 note: En af Trines favoritter.
+audio: regnvejrsdag-i-november.mp3
 ---
 
 Jeg vil male dagen blå

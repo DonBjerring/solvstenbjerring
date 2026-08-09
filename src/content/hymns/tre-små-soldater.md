@@ -2,6 +2,7 @@
 title: Tre små soldater
 section: songs
 note: Vores version af Tre små soldater. En af Markus' favoritter har han sagt. 
+audio: tre-små-soldater.mp3
 ---
 
 1.

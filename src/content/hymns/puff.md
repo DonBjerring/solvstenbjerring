@@ -3,6 +3,7 @@ title: Puff
 section: songs
 melody: Peter Yarrow
 lyrics: Peter Borgsten
+audio: puff.mp3
 ---
 
 Puff hvor kan man finde drager som dig

@@ -2,6 +2,7 @@
 title: Pjerrot sagde til månen
 section: songs
 melody: Jean-Baptiste Lully
+audio: pjerrot.mp3
 ---
 
 Pjerrot sa’ til månen

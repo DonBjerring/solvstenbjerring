@@ -1,6 +1,7 @@
 ---
 title: Fra Engeland til Skotland
 section: songs
+audio: fra-engeland-til-skotland.mp3
 ---
 
 Fra Engeland til Skotland, der sejlede en brig,

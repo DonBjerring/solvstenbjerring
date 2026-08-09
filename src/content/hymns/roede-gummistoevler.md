@@ -4,6 +4,7 @@ section: songs
 melody: Elisabeth Gjerluff Nielsen
 lyrics: Elisabeth Gjerluff Nielsen
 note: Fun fact - Trine ejer røde gummistøvler.
+audio: roede-gummistoevler.mp3
 ---
 
 Sutsko og futsko

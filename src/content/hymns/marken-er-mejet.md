@@ -2,6 +2,7 @@
 title: Marken er mejet
 section: songs
 lyrics: Mads Hansen
+audio: marken-er-mejet.mp3
 ---
 
 Marken er mejet, og høet er høstet,
