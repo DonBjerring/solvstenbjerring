@@ -4,6 +4,7 @@ section: lullabies
 melody: Benny Andersen
 lyrics: Benny Andersen
 note: En familiefavorit, specielt hos Ivans yngste søster.
+audio: barndommens-land.mp3
 ---
 
 Barndommens land.

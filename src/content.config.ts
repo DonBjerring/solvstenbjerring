@@ -30,6 +30,8 @@ const hymns = defineCollection({
     lyrics: z.string().optional(),
     /** Optional short personal note */
     note: z.string().optional(),
+    /** Filename in public/audio/hymns/ (e.g. livstraeet.mp3) */
+    audio: z.string().optional(),
   }),
 });
 

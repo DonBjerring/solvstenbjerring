@@ -48,6 +48,7 @@ section: lullabies   # songs = Sange, lullabies = Godnatsange
 melody: Navn på komponist   # valgfri
 lyrics: Navn på tekstforfatter  # valgfri
 note: Godnatsang            # valgfri personlig note
+audio: elefantens-vuggevise.mp3  # valgfri — fil i public/audio/hymns/
 ---
 
 Første linje
@@ -56,6 +57,8 @@ Tredje linje
 ```
 
 `section` skal være `songs` eller `lullabies`. Enkelte linjeskift i teksten bevares på sangsiden. `melody` og `lyrics` vises som “Melodi: … · Tekst: …” under titlen.
+
+Lydfil (valgfri): læg fx `elefantens-vuggevise.mp3` i `public/audio/hymns/` og sæt `audio:` i frontmatter. Afspilleren vises kun, når feltet er sat. Brug kun lyd I har ret til at dele.
 
 2. Commit og push til `main`.
 

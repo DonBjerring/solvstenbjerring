@@ -30,6 +30,10 @@ export async function getStaticPaths() {
 
 const { hymn, prev, next } = Astro.props;
 const lyrics = hymn.body?.trim() ?? '';
+const audioFile = hymn.data.audio?.trim();
+const audioSrc = audioFile
+  ? withBase(`audio/hymns/${audioFile.replace(/^\//, '')}`)
+  : null;
 ---
 
 <BaseLayout title={hymn.data.title} description={hymn.data.note ?? hymn.data.title}>
@@ -38,7 +42,7 @@ const lyrics = hymn.body?.trim() ?? '';
       <p class="text-sm text-sea min-w-0">
         <a href={withBase('/hymns/')} class="hover:underline">← Sanghæfte</a>
       </p>
-      <div class="shrink-0 text-right">
+      <div class="shrink-0 flex flex-col items-end gap-2">
         <label
           class="inline-flex items-center gap-2 text-deep cursor-pointer select-none"
           data-singing-label
@@ -50,6 +54,29 @@ const lyrics = hymn.body?.trim() ?? '';
           />
           <span class="text-sm">Jeg synger</span>
         </label>
+        {
+          audioSrc && (
+            <>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 text-sm text-deep hover:text-sea transition-colors"
+                data-melody-toggle
+                aria-pressed="false"
+              >
+                <span class="inline-flex size-4 items-center justify-center" aria-hidden="true" data-melody-icon>
+                  <svg viewBox="0 0 16 16" class="size-4 fill-current" data-melody-play>
+                    <path d="M4 2.5v11l9-5.5L4 2.5z" />
+                  </svg>
+                  <svg viewBox="0 0 16 16" class="size-4 fill-current hidden" data-melody-stop>
+                    <rect x="3.5" y="3.5" width="9" height="9" rx="0.5" />
+                  </svg>
+                </span>
+                <span data-melody-label>Hør melodi</span>
+              </button>
+              <audio class="hidden" preload="metadata" src={audioSrc} data-hymn-audio></audio>
+            </>
+          )
+        }
       </div>
     </div>
 
@@ -164,6 +191,9 @@ const lyrics = hymn.body?.trim() ?? '';
   const controls = document.querySelector('[data-singing-controls]');
   const hint = document.querySelector('[data-singing-hint]');
   const speedButtons = document.querySelectorAll('[data-scroll-speed]');
+  const melodyToggle = document.querySelector('[data-melody-toggle]');
+  const melodyAudio = document.querySelector('[data-hymn-audio]');
+  const melodyLabel = document.querySelector('[data-melody-label]');
   const wakeLockSupported = 'wakeLock' in navigator;
 
   /** Pixels per second. Slow matches the previous smooth pace; medium/fast stay farther apart for mobile. */
@@ -173,6 +203,42 @@ const lyrics = hymn.body?.trim() ?? '';
     medium: 25,
     fast: 45,
   };
+
+  if (melodyToggle instanceof HTMLButtonElement && melodyAudio instanceof HTMLAudioElement) {
+    const playIcon = document.querySelector('[data-melody-play]');
+    const stopIcon = document.querySelector('[data-melody-stop]');
+
+    function setMelodyPlaying(playing) {
+      melodyToggle.setAttribute('aria-pressed', String(playing));
+      if (playIcon instanceof SVGElement) playIcon.classList.toggle('hidden', playing);
+      if (stopIcon instanceof SVGElement) stopIcon.classList.toggle('hidden', !playing);
+      if (melodyLabel) melodyLabel.textContent = playing ? 'Stop melodi' : 'Hør melodi';
+    }
+
+    function stopMelody() {
+      melodyAudio.pause();
+      melodyAudio.currentTime = 0;
+      setMelodyPlaying(false);
+    }
+
+    melodyToggle.addEventListener('click', async () => {
+      if (!melodyAudio.paused) {
+        stopMelody();
+        return;
+      }
+      melodyAudio.currentTime = 0;
+      try {
+        await melodyAudio.play();
+        setMelodyPlaying(true);
+      } catch {
+        setMelodyPlaying(false);
+      }
+    });
+
+    melodyAudio.addEventListener('ended', () => {
+      stopMelody();
+    });
+  }
 
   if (toggle instanceof HTMLInputElement && controls instanceof HTMLElement) {
     let wakeLock = null;
@@ -365,7 +431,7 @@ const lyrics = hymn.body?.trim() ?? '';
       { passive: true },
     );
     window.addEventListener('keydown', (event) => {
-      const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
+      const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'];
       if (keys.includes(event.key)) pauseScrollFromUser();
     });
 
