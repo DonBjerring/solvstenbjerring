@@ -34,30 +34,30 @@ const lyrics = hymn.body?.trim() ?? '';
 
 <BaseLayout title={hymn.data.title} description={hymn.data.note ?? hymn.data.title}>
   <div class="mx-auto max-w-3xl px-4 py-12">
-    <p class="text-sm text-sea">
-      <a href={withBase('/hymns/')} class="hover:underline">← Sanghæfte</a>
-    </p>
+    <div class="flex items-start justify-between gap-4">
+      <p class="text-sm text-sea min-w-0">
+        <a href={withBase('/hymns/')} class="hover:underline">← Sanghæfte</a>
+      </p>
+      <div class="shrink-0 text-right">
+        <label
+          class="inline-flex items-center gap-2 text-deep cursor-pointer select-none"
+          data-singing-label
+        >
+          <input
+            type="checkbox"
+            class="size-5 accent-sea"
+            data-singing-toggle
+          />
+          <span class="text-sm">Jeg synger</span>
+        </label>
+        <p class="mt-1 text-xs text-sea" data-singing-hint hidden>
+          Skærmen holdes tændt
+        </p>
+      </div>
+    </div>
 
     <article class="mt-6">
-      <div class="flex items-start justify-between gap-4">
-        <h1 class="text-4xl text-deep min-w-0">{hymn.data.title}</h1>
-        <div class="shrink-0 text-right pt-1">
-          <label
-            class="inline-flex items-center gap-2 text-deep cursor-pointer select-none"
-            data-singing-label
-          >
-            <input
-              type="checkbox"
-              class="size-5 accent-sea"
-              data-singing-toggle
-            />
-            <span class="text-sm sm:text-base">Jeg synger</span>
-          </label>
-          <p class="mt-1 text-xs text-sea max-w-[9rem] ml-auto" data-singing-hint hidden>
-            Skærmen holdes tændt
-          </p>
-        </div>
-      </div>
+      <h1 class="text-4xl text-deep">{hymn.data.title}</h1>
       {
         hymn.data.note && (
           <p class="mt-3 text-sea/90 italic">{hymn.data.note}</p>
