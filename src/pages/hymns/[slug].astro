@@ -326,7 +326,8 @@ const audioSrc = audioFile
 
       if (scrollPos >= max - 0.5) {
         stopScroll();
-        setHint('Slut på siden');
+        setActiveSpeed('none');
+        updateHint();
         return;
       }
 
@@ -341,7 +342,8 @@ const audioSrc = audioFile
       }
       scrollPos = currentScrollTop();
       if (scrollPos >= maxScrollTop() - 0.5) {
-        setHint('Slut på siden');
+        setActiveSpeed('none');
+        updateHint();
         return;
       }
       if (scrolling) {
