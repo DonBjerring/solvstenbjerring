@@ -50,10 +50,45 @@ const lyrics = hymn.body?.trim() ?? '';
           />
           <span class="text-sm">Jeg synger</span>
         </label>
-        <p class="mt-1 text-xs text-sea" data-singing-hint hidden>
-          Skærmen holdes tændt
-        </p>
       </div>
+    </div>
+
+    <div class="mt-3 flex flex-wrap items-center justify-end gap-2" data-singing-controls hidden>
+      <span class="text-xs text-sea mr-1">Scroll:</span>
+      <div class="inline-flex rounded-sm border border-mist overflow-hidden" role="group" aria-label="Scrollhastighed">
+        <button
+          type="button"
+          class="px-2.5 py-1 text-xs text-sea hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+          data-scroll-speed="none"
+          data-active="true"
+        >
+          Ingen
+        </button>
+        <button
+          type="button"
+          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+          data-scroll-speed="slow"
+        >
+          Langsom
+        </button>
+        <button
+          type="button"
+          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+          data-scroll-speed="medium"
+        >
+          Middel
+        </button>
+        <button
+          type="button"
+          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+          data-scroll-speed="fast"
+        >
+          Hurtig
+        </button>
+      </div>
+      <p class="basis-full text-right text-xs text-sea" data-singing-hint>
+        Skærmen holdes tændt
+      </p>
     </div>
 
     <article class="mt-6">
@@ -118,11 +153,53 @@ const lyrics = hymn.body?.trim() ?? '';
 
 <script>
   const toggle = document.querySelector('[data-singing-toggle]');
+  const controls = document.querySelector('[data-singing-controls]');
   const hint = document.querySelector('[data-singing-hint]');
+  const speedButtons = document.querySelectorAll('[data-scroll-speed]');
   const wakeLockSupported = 'wakeLock' in navigator;
 
-  if (toggle instanceof HTMLInputElement) {
+  /** Pixels per second. `none` disables autoscroll. */
+  const SPEEDS = {
+    none: 0,
+    slow: 12,
+    medium: 22,
+    fast: 40,
+  };
+
+  if (toggle instanceof HTMLInputElement && controls instanceof HTMLElement) {
     let wakeLock = null;
+    let speed = 'none';
+    let scrolling = false;
+    let rafId = 0;
+    let lastTs = 0;
+    /** Fractional scroll position — browsers round scrollTop to integers */
+    let scrollPos = 0;
+
+    function setHint(text) {
+      if (hint instanceof HTMLElement) hint.textContent = text;
+    }
+
+    function updateHint() {
+      if (speed === 'none') {
+        setHint('Skærmen holdes tændt');
+      } else if (scrolling) {
+        setHint('Autoscroll kører · vælger Ingen hvis du selv scroller');
+      } else {
+        setHint('Vælg hastighed for at starte autoscroll');
+      }
+    }
+
+    function setControlsVisible(visible) {
+      controls.hidden = !visible;
+    }
+
+    function setActiveSpeed(next) {
+      speed = next;
+      speedButtons.forEach((btn) => {
+        if (!(btn instanceof HTMLElement)) return;
+        btn.dataset.active = String(btn.dataset.scrollSpeed === speed);
+      });
+    }
 
     async function requestWakeLock() {
       if (!wakeLockSupported) return;
@@ -131,46 +208,150 @@ const lyrics = hymn.body?.trim() ?? '';
         wakeLock.addEventListener('release', () => {
           wakeLock = null;
         });
-        if (hint instanceof HTMLElement) hint.hidden = false;
       } catch {
-        toggle.checked = false;
-        if (hint instanceof HTMLElement) hint.hidden = true;
+        // optional
       }
     }
 
     async function releaseWakeLock() {
-      if (wakeLock) {
-        try {
-          await wakeLock.release();
-        } catch {
-          // ignore
-        }
-        wakeLock = null;
+      if (!wakeLock) return;
+      try {
+        await wakeLock.release();
+      } catch {
+        // ignore
       }
-      if (hint instanceof HTMLElement) hint.hidden = true;
+      wakeLock = null;
+    }
+
+    function maxScrollTop() {
+      const el = document.scrollingElement || document.documentElement;
+      return Math.max(0, el.scrollHeight - window.innerHeight);
+    }
+
+    function currentScrollTop() {
+      const el = document.scrollingElement || document.documentElement;
+      return el.scrollTop;
+    }
+
+    function tick(ts) {
+      if (!scrolling) return;
+      const pxPerSec = SPEEDS[speed] ?? 0;
+      if (pxPerSec <= 0) {
+        stopScroll();
+        return;
+      }
+
+      if (!lastTs) lastTs = ts;
+      const delta = Math.min((ts - lastTs) / 1000, 0.1);
+      lastTs = ts;
+
+      const max = maxScrollTop();
+      scrollPos = Math.min(scrollPos + pxPerSec * delta, max);
+      window.scrollTo(0, scrollPos);
+
+      if (scrollPos >= max - 0.5) {
+        stopScroll();
+        setHint('Slut på siden');
+        return;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startScroll() {
+      if (SPEEDS[speed] <= 0) {
+        stopScroll();
+        updateHint();
+        return;
+      }
+      scrollPos = currentScrollTop();
+      if (scrollPos >= maxScrollTop() - 0.5) {
+        setHint('Slut på siden');
+        return;
+      }
+      if (scrolling) {
+        updateHint();
+        return;
+      }
+      scrolling = true;
+      lastTs = 0;
+      updateHint();
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function stopScroll() {
+      scrolling = false;
+      lastTs = 0;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+
+    function pauseScrollFromUser() {
+      if (!scrolling) return;
+      stopScroll();
+      scrollPos = currentScrollTop();
+      setActiveSpeed('none');
+      updateHint();
+    }
+
+    function applySpeed(next) {
+      setActiveSpeed(next);
+      if (!toggle.checked) return;
+      if (next === 'none') {
+        stopScroll();
+        updateHint();
+      } else {
+        startScroll();
+      }
+    }
+
+    function startSinging() {
+      setControlsVisible(true);
+      setActiveSpeed(speed);
+      requestWakeLock();
+      if (speed === 'none') {
+        stopScroll();
+        updateHint();
+      } else {
+        startScroll();
+      }
+    }
+
+    function stopSinging() {
+      stopScroll();
+      releaseWakeLock();
+      setControlsVisible(false);
+      setHint('Skærmen holdes tændt');
     }
 
     toggle.addEventListener('change', () => {
-      if (toggle.checked) {
-        requestWakeLock();
-      } else {
-        releaseWakeLock();
-      }
+      if (toggle.checked) startSinging();
+      else stopSinging();
+    });
+
+    speedButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!(btn instanceof HTMLElement)) return;
+        const next = btn.dataset.scrollSpeed;
+        if (!next || !(next in SPEEDS)) return;
+        applySpeed(next);
+      });
+    });
+
+    // wheel/touchmove are user-initiated; scrollTo does not fire these
+    window.addEventListener('wheel', pauseScrollFromUser, { passive: true });
+    window.addEventListener('touchmove', pauseScrollFromUser, { passive: true });
+    window.addEventListener('keydown', (event) => {
+      const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
+      if (keys.includes(event.key)) pauseScrollFromUser();
     });
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && toggle.checked) {
         requestWakeLock();
+      } else if (document.visibilityState === 'hidden') {
+        stopScroll();
       }
     });
-
-    if (!wakeLockSupported) {
-      toggle.disabled = true;
-      const label = document.querySelector('[data-singing-label]');
-      if (label instanceof HTMLElement) {
-        label.title = 'Ikke understøttet i denne browser';
-        label.classList.add('opacity-50');
-      }
-    }
   }
 </script>
