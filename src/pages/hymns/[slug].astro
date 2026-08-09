@@ -53,44 +53,6 @@ const lyrics = hymn.body?.trim() ?? '';
       </div>
     </div>
 
-    <div class="mt-3 flex flex-wrap items-center justify-end gap-2" data-singing-controls hidden>
-      <span class="text-xs text-sea mr-1">Scroll:</span>
-      <div class="inline-flex rounded-sm border border-mist overflow-hidden" role="group" aria-label="Scrollhastighed">
-        <button
-          type="button"
-          class="px-2.5 py-1 text-xs text-sea hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
-          data-scroll-speed="none"
-          data-active="true"
-        >
-          Ingen
-        </button>
-        <button
-          type="button"
-          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
-          data-scroll-speed="slow"
-        >
-          Langsom
-        </button>
-        <button
-          type="button"
-          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
-          data-scroll-speed="medium"
-        >
-          Middel
-        </button>
-        <button
-          type="button"
-          class="px-2.5 py-1 text-xs text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
-          data-scroll-speed="fast"
-        >
-          Hurtig
-        </button>
-      </div>
-      <p class="basis-full text-right text-xs text-sea" data-singing-hint>
-        Skærmen holdes tændt
-      </p>
-    </div>
-
     <article class="mt-6">
       <h1 class="text-4xl text-deep">{hymn.data.title}</h1>
       {
@@ -149,6 +111,52 @@ const lyrics = hymn.body?.trim() ?? '';
       )
     }
   </div>
+
+  <div
+    class="fixed inset-x-0 bottom-0 z-50 border-t border-mist bg-sand/95 backdrop-blur-sm px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+    data-singing-controls
+    hidden
+  >
+    <div class="mx-auto max-w-3xl flex flex-col items-center gap-2 sm:flex-row sm:justify-between sm:items-center">
+      <p class="text-xs text-sea order-2 sm:order-1" data-singing-hint>
+        Skærmen holdes tændt
+      </p>
+      <div class="flex items-center gap-2 order-1 sm:order-2">
+        <span class="text-xs text-sea">Scroll</span>
+        <div class="inline-flex rounded-sm border border-mist overflow-hidden bg-foam" role="group" aria-label="Scrollhastighed">
+          <button
+            type="button"
+            class="px-3 py-2 text-sm text-sea hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+            data-scroll-speed="none"
+            data-active="true"
+          >
+            Ingen
+          </button>
+          <button
+            type="button"
+            class="px-3 py-2 text-sm text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+            data-scroll-speed="slow"
+          >
+            Langsom
+          </button>
+          <button
+            type="button"
+            class="px-3 py-2 text-sm text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+            data-scroll-speed="medium"
+          >
+            Middel
+          </button>
+          <button
+            type="button"
+            class="px-3 py-2 text-sm text-sea border-l border-mist hover:bg-mist/50 data-[active=true]:bg-mist data-[active=true]:text-deep"
+            data-scroll-speed="fast"
+          >
+            Hurtig
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </BaseLayout>
 
 <script>
@@ -191,6 +199,7 @@ const lyrics = hymn.body?.trim() ?? '';
 
     function setControlsVisible(visible) {
       controls.hidden = !visible;
+      document.body.classList.toggle('singing-mode', visible);
     }
 
     function setActiveSpeed(next) {
@@ -338,9 +347,23 @@ const lyrics = hymn.body?.trim() ?? '';
       });
     });
 
-    // wheel/touchmove are user-initiated; scrollTo does not fire these
-    window.addEventListener('wheel', pauseScrollFromUser, { passive: true });
-    window.addEventListener('touchmove', pauseScrollFromUser, { passive: true });
+    // Pause on user scroll, but not when interacting with the bottom controls
+    window.addEventListener(
+      'wheel',
+      (event) => {
+        if (event.target instanceof Node && controls.contains(event.target)) return;
+        pauseScrollFromUser();
+      },
+      { passive: true },
+    );
+    window.addEventListener(
+      'touchmove',
+      (event) => {
+        if (event.target instanceof Node && controls.contains(event.target)) return;
+        pauseScrollFromUser();
+      },
+      { passive: true },
+    );
     window.addEventListener('keydown', (event) => {
       const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
       if (keys.includes(event.key)) pauseScrollFromUser();
@@ -355,3 +378,9 @@ const lyrics = hymn.body?.trim() ?? '';
     });
   }
 </script>
+
+<style is:global>
+  body.singing-mode {
+    padding-bottom: 5.5rem;
+  }
+</style>
