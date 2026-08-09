@@ -17,7 +17,7 @@ og himmelhvælvingens port.
 
 Der er så meget uden varme,
 uden ånd og uden liv.
-Folk bliver fattige or arme,
+Folk bliver fattige og arme,
 tænker kun på tidsfordriv.
 
 Lad dem lege...
