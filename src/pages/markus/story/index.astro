@@ -32,6 +32,7 @@ const posts = (await getCollection('story'))
               date={date}
               summary={summary}
               href={withBase(`/markus/story/${post.id}/`)}
+              hasImage={Boolean(post.data.image?.trim())}
             />
           ))}
         </div>
