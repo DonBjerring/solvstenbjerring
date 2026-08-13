@@ -120,11 +120,22 @@ const markusActive = isActive('/markus/');
   const nav = document.getElementById('site-nav');
   const markusMenu = document.getElementById('markus-menu');
 
+  function setNavOpen(open) {
+    if (!nav || !toggle) return;
+    nav.classList.toggle('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+    if (!open && markusMenu instanceof HTMLDetailsElement) {
+      markusMenu.open = false;
+    }
+  }
+
+  function isNavOpen() {
+    return Boolean(nav && !nav.classList.contains('hidden'));
+  }
+
   toggle?.addEventListener('click', (event) => {
     event.stopPropagation();
-    nav?.classList.toggle('hidden');
-    const open = !nav?.classList.contains('hidden');
-    toggle.setAttribute('aria-expanded', String(open));
+    setNavOpen(!isNavOpen());
   });
 
   document.addEventListener('click', (event) => {
@@ -134,6 +145,10 @@ const markusActive = isActive('/markus/');
     if (markusMenu instanceof HTMLDetailsElement && !markusMenu.contains(target)) {
       markusMenu.open = false;
     }
+
+    if (!isNavOpen()) return;
+    if (nav?.contains(target) || toggle?.contains(target)) return;
+    setNavOpen(false);
   });
 
   document.addEventListener('keydown', (event) => {
@@ -141,6 +156,7 @@ const markusActive = isActive('/markus/');
     if (markusMenu instanceof HTMLDetailsElement) {
       markusMenu.open = false;
     }
+    if (isNavOpen()) setNavOpen(false);
   });
 </script>
 
