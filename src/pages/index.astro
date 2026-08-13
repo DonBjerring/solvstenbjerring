@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ImageWithSkeleton from '../components/ImageWithSkeleton.astro';
 import { listPublicImages } from '../lib/gallery';
 
 const homeImages = listPublicImages('home');
@@ -10,7 +11,12 @@ const hero = homeImages[0];
   <section>
     {
       hero ? (
-        <img src={hero.src} alt="front-page-image" class="w-full max-h-[70vh] object-cover" />
+        <ImageWithSkeleton
+          src={hero.src}
+          alt="front-page-image"
+          imgClass="max-h-[70vh] object-cover"
+          loading="eager"
+        />
       ) : (
         <div class="w-full min-h-[50vh] bg-gradient-to-b from-mist to-sand flex items-center justify-center text-sea">
           Billede kommer snart

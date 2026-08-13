@@ -1,4 +1,5 @@
 ---
+import ImageWithSkeleton from './ImageWithSkeleton.astro';
 import { withBase } from '../lib/urls';
 import {
   formatStoryTitle,
@@ -23,6 +24,7 @@ const date = resolveStoryDate({ date: dateOverride, image });
 const dateLabel = date ? formatStoryTitle(date) : null;
 const imageSrc = image ? withBase(storyImageSrc(image)) : null;
 const heading = title?.trim() || null;
+const imageFigureClass = [heading || date ? 'mt-8' : '', 'rounded-sm'].filter(Boolean).join(' ');
 ---
 
 <article class="story-post">
@@ -42,14 +44,7 @@ const heading = title?.trim() || null;
 
   {
     imageSrc && (
-      <figure class={heading || date ? 'mt-8' : undefined}>
-        <img
-          src={imageSrc}
-          alt=""
-          class="w-full h-auto rounded-sm"
-          loading="lazy"
-        />
-      </figure>
+      <ImageWithSkeleton src={imageSrc} class={imageFigureClass} />
     )
   }
 

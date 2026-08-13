@@ -1,4 +1,6 @@
 ---
+import ImageWithSkeleton from './ImageWithSkeleton.astro';
+
 interface Props {
   images: { src: string; name: string }[];
   emptyMessage: string;
@@ -15,38 +17,27 @@ const { images, emptyMessage, lightbox = false } = Astro.props;
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0">
       {images.map((image, index) => (
         <li>
-          <figure class="relative overflow-hidden rounded-sm bg-mist min-h-48">
-            <div
-              class="gallery-skeleton absolute inset-0 z-0"
-              data-gallery-skeleton
-              aria-hidden="true"
-            />
-            {lightbox ? (
-              <button
-                type="button"
-                class="relative z-10 block w-full p-0 border-0 bg-transparent cursor-zoom-in"
-                data-lightbox-trigger
-                data-lightbox-index={index}
-                aria-label="Vis billede større"
-              >
-                <img
-                  src={image.src}
-                  alt=""
-                  class="gallery-image w-full h-auto object-cover opacity-0 transition-opacity duration-500"
-                  loading="lazy"
-                  data-gallery-image
-                />
-              </button>
-            ) : (
-              <img
+          {lightbox ? (
+            <button
+              type="button"
+              class="block w-full p-0 border-0 bg-transparent cursor-zoom-in"
+              data-lightbox-trigger
+              data-lightbox-index={index}
+              aria-label="Vis billede større"
+            >
+              <ImageWithSkeleton
                 src={image.src}
-                alt=""
-                class="gallery-image relative z-10 w-full h-auto object-cover opacity-0 transition-opacity duration-500"
-                loading="lazy"
-                data-gallery-image
+                class="rounded-sm min-h-48"
+                imgClass="object-cover"
               />
-            )}
-          </figure>
+            </button>
+          ) : (
+            <ImageWithSkeleton
+              src={image.src}
+              class="rounded-sm min-h-48"
+              imgClass="object-cover"
+            />
+          )}
         </li>
       ))}
     </ul>
@@ -113,128 +104,75 @@ const { images, emptyMessage, lightbox = false } = Astro.props;
 }
 
 {
-  images.length > 0 && (
-    <script define:vars={{ imageSrcs: images.map((image) => image.src), lightboxEnabled: lightbox }}>
-      function revealImage(img) {
-        if (!(img instanceof HTMLImageElement)) return;
-        img.classList.add('is-loaded');
-        const skeleton = img.closest('figure')?.querySelector('[data-gallery-skeleton]');
-        if (skeleton instanceof HTMLElement) {
-          skeleton.classList.add('is-hidden');
+  lightbox && images.length > 0 && (
+    <script define:vars={{ imageSrcs: images.map((image) => image.src) }}>
+      const dialog = document.getElementById('gallery-lightbox');
+      const lightboxImage = document.querySelector('[data-lightbox-image]');
+      const counter = document.querySelector('[data-lightbox-counter]');
+      const prevBtn = document.querySelector('[data-lightbox-prev]');
+      const nextBtn = document.querySelector('[data-lightbox-next]');
+      const closeBtn = document.querySelector('[data-lightbox-close]');
+      const backdrop = document.querySelector('[data-lightbox-backdrop]');
+      const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+
+      if (dialog instanceof HTMLDialogElement && lightboxImage instanceof HTMLImageElement) {
+        let currentIndex = 0;
+
+        function show(index) {
+          const total = imageSrcs.length;
+          currentIndex = ((index % total) + total) % total;
+          lightboxImage.src = imageSrcs[currentIndex];
+          if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${total}`;
+          }
         }
-      }
 
-      document.querySelectorAll('[data-gallery-image]').forEach((img) => {
-        if (!(img instanceof HTMLImageElement)) return;
-        if (img.complete && img.naturalWidth > 0) {
-          revealImage(img);
-        } else {
-          img.addEventListener('load', () => revealImage(img), { once: true });
-          img.addEventListener('error', () => revealImage(img), { once: true });
+        function openAt(index) {
+          show(index);
+          if (!dialog.open) dialog.showModal();
         }
-      });
 
-      if (lightboxEnabled && imageSrcs.length > 0) {
-        const dialog = document.getElementById('gallery-lightbox');
-        const lightboxImage = document.querySelector('[data-lightbox-image]');
-        const counter = document.querySelector('[data-lightbox-counter]');
-        const prevBtn = document.querySelector('[data-lightbox-prev]');
-        const nextBtn = document.querySelector('[data-lightbox-next]');
-        const closeBtn = document.querySelector('[data-lightbox-close]');
-        const backdrop = document.querySelector('[data-lightbox-backdrop]');
-        const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+        function closeLightbox() {
+          dialog.close();
+        }
 
-        if (dialog instanceof HTMLDialogElement && lightboxImage instanceof HTMLImageElement) {
-          let currentIndex = 0;
-
-          function show(index) {
-            const total = imageSrcs.length;
-            currentIndex = ((index % total) + total) % total;
-            lightboxImage.src = imageSrcs[currentIndex];
-            if (counter) {
-              counter.textContent = `${currentIndex + 1} / ${total}`;
-            }
-          }
-
-          function openAt(index) {
-            show(index);
-            if (!dialog.open) dialog.showModal();
-          }
-
-          function closeLightbox() {
-            dialog.close();
-          }
-
-          triggers.forEach((trigger) => {
-            trigger.addEventListener('click', () => {
-              const index = Number(trigger.getAttribute('data-lightbox-index') ?? '0');
-              openAt(index);
-            });
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            const index = Number(trigger.getAttribute('data-lightbox-index') ?? '0');
+            openAt(index);
           });
+        });
 
-          prevBtn?.addEventListener('click', (event) => {
-            event.stopPropagation();
+        prevBtn?.addEventListener('click', (event) => {
+          event.stopPropagation();
+          show(currentIndex - 1);
+        });
+
+        nextBtn?.addEventListener('click', (event) => {
+          event.stopPropagation();
+          show(currentIndex + 1);
+        });
+
+        closeBtn?.addEventListener('click', (event) => {
+          event.stopPropagation();
+          closeLightbox();
+        });
+
+        backdrop?.addEventListener('click', () => {
+          closeLightbox();
+        });
+
+        dialog.addEventListener('keydown', (event) => {
+          if (!dialog.open) return;
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
             show(currentIndex - 1);
-          });
-
-          nextBtn?.addEventListener('click', (event) => {
-            event.stopPropagation();
+          } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
             show(currentIndex + 1);
-          });
-
-          closeBtn?.addEventListener('click', (event) => {
-            event.stopPropagation();
-            closeLightbox();
-          });
-
-          backdrop?.addEventListener('click', () => {
-            closeLightbox();
-          });
-
-          dialog.addEventListener('keydown', (event) => {
-            if (!dialog.open) return;
-            if (event.key === 'ArrowLeft') {
-              event.preventDefault();
-              show(currentIndex - 1);
-            } else if (event.key === 'ArrowRight') {
-              event.preventDefault();
-              show(currentIndex + 1);
-            }
-          });
-        }
+          }
+        });
       }
     </script>
   )
 }
-
-<style>
-  .gallery-skeleton {
-    background: linear-gradient(
-      90deg,
-      var(--color-mist) 0%,
-      var(--color-sand) 45%,
-      var(--color-mist) 90%
-    );
-    background-size: 200% 100%;
-    animation: gallery-shimmer 1.4s ease-in-out infinite;
-  }
-
-  .gallery-skeleton.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease;
-  }
-
-  .gallery-image.is-loaded {
-    opacity: 1;
-  }
-
-  @keyframes gallery-shimmer {
-    0% {
-      background-position: 100% 0;
-    }
-    100% {
-      background-position: -100% 0;
-    }
-  }
-</style>

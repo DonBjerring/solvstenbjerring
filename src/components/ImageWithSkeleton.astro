@@ -1,0 +1,91 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  class?: string;
+  imgClass?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  src,
+  alt = '',
+  class: figureClass = '',
+  imgClass = '',
+  loading = 'lazy',
+} = Astro.props;
+---
+
+<figure class:list={['relative overflow-hidden bg-mist', figureClass]}>
+  <div class="img-skeleton absolute inset-0 z-0" data-img-skeleton aria-hidden="true" />
+  <img
+    src={src}
+    alt={alt}
+    class:list={[
+      'img-skeleton-target relative z-10 w-full h-auto opacity-0 transition-opacity duration-500',
+      imgClass,
+    ]}
+    loading={loading}
+    data-img-skeleton-target
+  />
+</figure>
+
+<script>
+  function revealSkeletonImage(img) {
+    if (!(img instanceof HTMLImageElement)) return;
+    img.classList.add('is-loaded');
+    const skeleton = img.closest('figure')?.querySelector('[data-img-skeleton]');
+    if (skeleton instanceof HTMLElement) {
+      skeleton.classList.add('is-hidden');
+    }
+  }
+
+  function bindSkeletonImages() {
+    document.querySelectorAll('[data-img-skeleton-target]').forEach((img) => {
+      if (!(img instanceof HTMLImageElement)) return;
+      if (img.dataset.skeletonBound === 'true') return;
+      img.dataset.skeletonBound = 'true';
+      if (img.complete && img.naturalWidth > 0) {
+        revealSkeletonImage(img);
+      } else {
+        img.addEventListener('load', () => revealSkeletonImage(img), { once: true });
+        img.addEventListener('error', () => revealSkeletonImage(img), { once: true });
+      }
+    });
+  }
+
+  bindSkeletonImages();
+  document.addEventListener('astro:page-load', bindSkeletonImages);
+</script>
+
+<style>
+  .img-skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-mist) 0%,
+      var(--color-sand) 45%,
+      var(--color-mist) 90%
+    );
+    background-size: 200% 100%;
+    animation: img-shimmer 1.4s ease-in-out infinite;
+  }
+
+  .img-skeleton.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .img-skeleton-target.is-loaded {
+    opacity: 1;
+  }
+
+  @keyframes img-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+</style>
