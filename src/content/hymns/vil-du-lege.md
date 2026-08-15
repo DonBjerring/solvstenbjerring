@@ -7,10 +7,10 @@ note: Ivans børnevenlige version af "Vil du noget".
 ---
 
 Åh, jeg ku' smadre noget
-Halvanden lego hær
+Halvanden legohær
 Åh, eller ta' afsted
 Du og jeg
-Ud at finde nogen og snak med
+Ud at finde nogen og snak' med
 Hey, hey, ja, dig
 Vil du lege? Vil du lege med mig?
 Hey, hey, ja, dig
@@ -30,10 +30,10 @@ Med sabeltiger fra Bjerringbro
 
 [Omkvæd]
 Åh, jeg ku' smadre noget
-Halvanden lego hær
+Halvanden legohær
 Åh, eller ta' afsted
 Du og jeg
-Ud at finde nogen og snak med
+Ud at finde nogen og snak' med
 Hey, hey, ja, dig
 Vil du lege? Vil du lege med mig?
 Hey, hey, ja, dig
@@ -44,7 +44,7 @@ Ja, vil du lege med mig?
 Jeg var kun 10 uger, det var sejest bare at være ligeglad
 Alt hvad jeg vidste om Dragon Ball Z, havde jeg set i en Manga
 Camilla fra H5 mister sin' mønter i et havebed
-Og kom lad os smadre noget, eller finde nogen vi ka' snak med
+Og kom lad os smadre noget, eller finde nogen vi ka' snak' med
 Og når jeg ser tilbage, alt det der var normalt
 Jeg drukner i havrefras og kærlighed og tærte 
 Halbal i Haarby, folk kaster gajol
@@ -61,10 +61,10 @@ Det' sgu da grineren
 
 [Omkvæd]
 Åh, jeg ku' smadre noget
-Halvanden lego hær 
+Halvanden legohær 
 Åh, eller ta' afsted
 Du og jeg
-Ud at finde nogen at snak med
+Ud at finde nogen at snak' med
 Hey, hey, ja, dig (Hey, ja, dig)
 Vil du lege? Vil du lege med mig? (Vil du lege med mig?)
 Hey, hey, ja, dig
