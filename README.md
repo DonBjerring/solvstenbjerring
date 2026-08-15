@@ -1,6 +1,8 @@
 # Sølvsten Bjerring
 
-Familiehjemmeside til www.solvstenbjerring.dk — bygget med Astro og Tailwind CSS, hostet på GitHub Pages.
+Familiehjemmeside til [https://sølvstenbjerring.dk](https://sølvstenbjerring.dk) — Astro 7 + Tailwind CSS 4, statisk build, hostet på GitHub Pages.
+
+Indhold tilføjes som Markdown og billed-/lydfiler.
 
 ## Kom i gang lokalt
 
@@ -16,26 +18,61 @@ npm run build    # byg til mappen dist/
 npm run preview  # forhåndsvis det byggede site
 ```
 
-## Tilføj en opdatering (Indlæggelsesforløb)
+## Menustruktur
 
-1. Læg evt. billede i `public/images/markus/story/` (gerne `YYYYMMDD-HHMMSS.jpg` via rename-scriptet)
-2. Opret en fil i `src/content/story/`, fx `foerste-dag.md`:
+| Menu | URL |
+|------|-----|
+| Forside | `/` |
+| Trivan | `/trivan/` |
+| Markus → Oversigt | `/markus/` |
+| Markus → Indlæggelsesforløb | `/markus/story/` |
+| Markus → Galleri | `/markus/gallery/` |
+| Markus → Diplomer | `/markus/diplomas/` |
+| Sanghæfte | `/hymns/` |
+| Om familien | `/about/` |
+
+## Mapper (hurtigt overblik)
+
+```
+src/content/story/          ← indlæggelsesforløb (Markdown)
+src/content/hymns/          ← sanghæfte (Markdown)
+public/images/home/         ← forsidebillede
+public/images/trivan/       ← Trivan-billede
+public/images/markus/story/ ← billeder til indlæg
+public/images/markus/gallery/
+public/images/markus/diplomas/
+public/audio/hymns/         ← valgfrie melodier til sange
+scripts/rename-images-by-date.py
+```
+
+## Tilføj et indlæg (Indlæggelsesforløb)
+
+1. Læg evt. billede i `public/images/markus/story/` (gerne `YYYYMMDD-HHMMSS.jpg` via rename-scriptet).
+2. Opret en fil i `src/content/story/`, fx `20260814.md`:
 
 ```markdown
 ---
-image: 20260513-160309.jpg
+image: 20260814-074319.jpg
+date: 2026-08-14
+title: Valgfri overskrift
+summary: Kort teaser til listen
 text: |
   Her er teksten til indlægget.
   Den kan fylde flere linjer.
-# title: "Valgfri overskrift"
-# summary: "Kort teaser til listen"
-# date: 2026-05-13              # kun nødvendigt hvis der ikke er billede
 ---
 ```
 
-Alle felter er valgfrie. `title` er kun en overskrift — uden den vises kun datoen (fra billedet).
+Alle felter er valgfrie:
 
-3. Commit og push til `main` — siden opdateres automatisk.
+- **`image`** — filnavn i `public/images/markus/story/`. Listen viser et lille billedikon ud for datoen, når feltet er sat.
+- **`date`** — styrer sortering og dato på siden. Hvis den mangler, udledes datoen fra billedfilnavnet, når det er muligt.
+- **`title`** — overskrift. Uden den vises kun datoen.
+- **`summary`** — teaser på oversigten.
+- **`text`** — brødtekst (kan også skrives som markdown-body under frontmatter).
+
+På indlægssiden er der forrige/næste-navigation. Billeder har skeleton-loading mens de hentes.
+
+3. Commit og push til `main`.
 
 ## Tilføj en sang (Sanghæfte)
 
@@ -56,23 +93,26 @@ Anden linje
 Tredje linje
 ```
 
-`section` skal være `songs` eller `lullabies`. Enkelte linjeskift i teksten bevares på sangsiden. `melody` og `lyrics` vises som “Melodi: … · Tekst: …” under titlen.
+- `section` skal være `songs` eller `lullabies`.
+- Listen er alfabetisk inden for hver sektion; notes vises kun på sangsiden.
+- Linjeskift i teksten bevares.
+- `melody` / `lyrics` vises som “Melodi: … · Tekst: …” under titlen.
 
-Lydfil (valgfri): læg fx `elefantens-vuggevise.mp3` i `public/audio/hymns/` og sæt `audio:` i frontmatter. Afspilleren vises kun, når feltet er sat. Brug kun lyd I har ret til at dele.
+**Lyd (valgfri):** læg fx `elefantens-vuggevise.mp3` i `public/audio/hymns/` og sæt `audio:` i frontmatter. Så vises “Hør melodi”. Brug kun lyd I har ret til at dele.
+
+**På sangsiden:** “Jeg synger” (holder skærmen vågen) + valgfri autoscroll (Ingen / Langsom / Middel / Hurtig), forrige/næste-sang, og melodi-knap når `audio` er sat.
 
 2. Commit og push til `main`.
 
 ## Tilføj billeder til galleri
 
-Læg billedfiler (`.jpg`, `.jpeg`, `.png`, `.webp`, …) i:
+Læg filer (`.jpg`, `.jpeg`, `.png`, `.webp`, …) i:
 
 `public/images/markus/gallery/`
 
-De vises automatisk på Galleri-siden (sorteret efter filnavn). Ingen billedtekster i v1.
+De vises automatisk (sorteret efter filnavn). Klik for større visning. Skeleton-loading mens billederne hentes.
 
 ### Omdøb efter dato
-
-For ens filnavne (`YYYYMMDD-HHMMSS.jpg`):
 
 ```bash
 # Se hvad der vil ske
@@ -82,13 +122,11 @@ python3 scripts/rename-images-by-date.py public/images/markus/gallery
 python3 scripts/rename-images-by-date.py public/images/markus/gallery --apply
 ```
 
-Virker også på andre mapper, fx `public/images/markus/diplomas`.
+Virker også på andre mapper, fx `public/images/markus/diplomas` og `public/images/markus/story`.
 
 ## Tilføj diplomer
 
-Læg billeder i:
-
-`public/images/markus/diplomas/`
+Læg billeder i `public/images/markus/diplomas/`.
 
 Nummerér filerne for at styre rækkefølgen, fx:
 
@@ -98,29 +136,22 @@ Nummerér filerne for at styre rækkefølgen, fx:
 03-third.jpg
 ```
 
-De sorteres efter filnavn. Klik på et billede for at se det større.
+Sorteres efter filnavn. Klik for større visning.
 
-## Forsidebillede
+## Forside- og Trivan-billede
 
-Læg billedet i:
-
-`public/images/home/`
-
-Det første billede (alfabetisk efter filnavn) bruges på forsiden.
+| Side | Mappe | Regel |
+|------|--------|--------|
+| Forside | `public/images/home/` | Første fil (alfabetisk) bruges |
+| Trivan | `public/images/trivan/` | Første fil (alfabetisk) bruges |
 
 ## Publicering (GitHub Pages)
 
-1. Push til `main`
-2. På GitHub: **Settings → Pages → Source: GitHub Actions**
-3. Brug kun workflowen **Deploy to GitHub Pages** (`.github/workflows/deploy.yml`) — ikke “Deploy static content”
-4. Siden ligger på: https://sølvstenbjerring.dk (`www` redirecter hertil)
+1. Push til `main` (eller kør workflowen manuelt).
+2. På GitHub: **Settings → Pages → Source: GitHub Actions**.
+3. Brug workflowen **Deploy to GitHub Pages** (`.github/workflows/deploy.yml`).
+4. Live: [https://sølvstenbjerring.dk](https://sølvstenbjerring.dk)
 
-Custom domain er sat via `public/CNAME` og DNS hos DanDomain (A-records til GitHub Pages + CNAME for `www` → `donbjerring.github.io`).
+Custom domain står i `public/CNAME`. DNS går via Cloudflare til GitHub Pages (`www` kan redirecte til apex).
 
-## Menustruktur
-
-- Forside → `/`
-- Trivan → `/trivan/`
-- Markus → `/markus/` (Indlæggelsesforløb `/markus/story/`, Galleri `/markus/gallery/`, Diplomer `/markus/diplomas/`)
-- Sanghæfte → `/hymns/`
-- Om familien → `/about/`
+Deploy afbryder en igangværende deploy ved ny push (`cancel-in-progress: true`), så den nyeste version kommer hurtigere live.
