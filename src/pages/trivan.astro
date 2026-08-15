@@ -13,8 +13,8 @@ const photo = images[0];
       <section class="w-full lg:mx-auto lg:max-w-5xl lg:px-4">
         <div class="relative overflow-hidden">
           <ImageWithSkeleton src={photo.src} imgClass="block" loading="eager" />
-          <div class="absolute inset-0 bg-gradient-to-b from-deep/50 via-deep/15 to-transparent" aria-hidden="true" />
-          <div class="absolute inset-x-0 top-0 px-5 pt-8 sm:px-6 lg:px-4 lg:pt-12">
+          <div class="absolute inset-0 z-10 bg-gradient-to-b from-deep/50 via-deep/15 to-transparent" aria-hidden="true" />
+          <div class="absolute inset-x-0 top-0 z-10 px-5 pt-8 sm:px-6 lg:px-4 lg:pt-12">
             <div class="lg:mx-auto lg:max-w-3xl">
               <h1 class="text-4xl md:text-5xl text-foam">Trivan</h1>
               <p class="mt-4 text-lg text-foam/90 leading-relaxed">

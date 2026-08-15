@@ -16,7 +16,7 @@ const {
 } = Astro.props;
 ---
 
-<figure class:list={['relative overflow-hidden bg-mist', figureClass]}>
+<figure class:list={['relative isolate overflow-hidden bg-mist', figureClass]}>
   <div class="img-skeleton absolute inset-0 z-0" data-img-skeleton aria-hidden="true" />
   <img
     src={src}
