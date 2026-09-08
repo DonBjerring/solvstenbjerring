@@ -4,12 +4,15 @@ import { withBase } from '../lib/urls';
 import {
   formatStoryTitle,
   resolveStoryDate,
+  resolveStoryImages,
   storyImageSrc,
 } from '../lib/story';
 
 interface Props {
   /** Filename in public/images/markus/story/, e.g. 20260513-160309.jpg */
   image?: string;
+  /** Multiple filenames in public/images/markus/story/ */
+  images?: string[];
   /** Optional body text */
   text?: string;
   /** Optional title — omitted entirely when not set */
@@ -18,13 +21,14 @@ interface Props {
   date?: Date;
 }
 
-const { image, text, title, date: dateOverride } = Astro.props;
+const { image, images, text, title, date: dateOverride } = Astro.props;
 
-const date = resolveStoryDate({ date: dateOverride, image });
+const date = resolveStoryDate({ date: dateOverride, image, images });
 const dateLabel = date ? formatStoryTitle(date) : null;
-const imageSrc = image ? withBase(storyImageSrc(image)) : null;
+const imageList = resolveStoryImages({ image, images });
+const imageSrcs = imageList.map((name) => withBase(storyImageSrc(name)));
 const heading = title?.trim() || null;
-const imageFigureClass = [heading || date ? 'mt-8' : '', 'rounded-sm'].filter(Boolean).join(' ');
+const hasText = Boolean(text?.trim());
 ---
 
 <article class="story-post">
@@ -43,20 +47,29 @@ const imageFigureClass = [heading || date ? 'mt-8' : '', 'rounded-sm'].filter(Bo
   }
 
   {
-    imageSrc && (
-      <ImageWithSkeleton src={imageSrc} class={imageFigureClass} />
-    )
-  }
-
-  {
-    text && (
+    hasText && (
       <div
         class:list={[
-          imageSrc || heading || date ? 'mt-8' : '',
+          heading || date ? 'mt-8' : '',
           'prose prose-lg max-w-none text-deep/90 leading-relaxed whitespace-pre-line',
         ]}
       >
         {text}
+      </div>
+    )
+  }
+
+  {
+    imageSrcs.length > 0 && (
+      <div
+        class:list={[
+          hasText || heading || date ? 'mt-8' : '',
+          'flex flex-col gap-6',
+        ]}
+      >
+        {imageSrcs.map((src) => (
+          <ImageWithSkeleton src={src} class="rounded-sm" />
+        ))}
       </div>
     )
   }

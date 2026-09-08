@@ -3,16 +3,24 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import UpdateCard from '../../../components/UpdateCard.astro';
 import { withBase } from '../../../lib/urls';
-import { resolveStoryDate } from '../../../lib/story';
+import { resolveStoryDate, resolveStoryImages } from '../../../lib/story';
 
 const posts = (await getCollection('story'))
   .map((post) => {
     const date =
-      resolveStoryDate({ date: post.data.date, image: post.data.image }) ??
-      new Date(0);
+      resolveStoryDate({
+        date: post.data.date,
+        image: post.data.image,
+        images: post.data.images,
+      }) ?? new Date(0);
     const title = post.data.title?.trim() || undefined;
     const summary = post.data.summary ?? post.data.text ?? '';
-    return { post, date, title, summary };
+    const hasImage =
+      resolveStoryImages({
+        image: post.data.image,
+        images: post.data.images,
+      }).length > 0;
+    return { post, date, title, summary, hasImage };
   })
   .sort((a, b) => b.date.valueOf() - a.date.valueOf());
 ---
@@ -26,13 +34,13 @@ const posts = (await getCollection('story'))
         <p class="mt-10 text-sea text-lg">Ingen opdateringer endnu.</p>
       ) : (
         <div class="mt-8">
-          {posts.map(({ post, date, title, summary }) => (
+          {posts.map(({ post, date, title, summary, hasImage }) => (
             <UpdateCard
               title={title}
               date={date}
               summary={summary}
               href={withBase(`/markus/story/${post.id}/`)}
-              hasImage={Boolean(post.data.image?.trim())}
+              hasImage={hasImage}
             />
           ))}
         </div>

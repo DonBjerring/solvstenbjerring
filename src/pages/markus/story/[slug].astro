@@ -12,8 +12,11 @@ export async function getStaticPaths() {
   const ordered = (await getCollection('story'))
     .map((post) => {
       const date =
-        resolveStoryDate({ date: post.data.date, image: post.data.image }) ??
-        new Date(0);
+        resolveStoryDate({
+          date: post.data.date,
+          image: post.data.image,
+          images: post.data.images,
+        }) ?? new Date(0);
       const title = post.data.title?.trim() || formatStoryTitle(date);
       return { post, date, title };
     })
@@ -32,7 +35,12 @@ export async function getStaticPaths() {
 const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
 
-const date = resolveStoryDate({ date: post.data.date, image: post.data.image }) ?? undefined;
+const date =
+  resolveStoryDate({
+    date: post.data.date,
+    image: post.data.image,
+    images: post.data.images,
+  }) ?? undefined;
 const heading = post.data.title?.trim() || null;
 const pageTitle = heading ?? (date ? formatStoryTitle(date) : 'Indlæg');
 const description = post.data.summary ?? post.data.text ?? pageTitle;
@@ -47,6 +55,7 @@ const hasMarkdownBody = Boolean(post.body?.trim());
     <div class="mt-6">
       <StoryPost
         image={post.data.image}
+        images={post.data.images}
         text={post.data.text}
         title={post.data.title}
         date={date}

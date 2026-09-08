@@ -55,12 +55,32 @@ export function formatStoryTitle(date: Date): string {
   return `${day}. ${month} ${year}`;
 }
 
+/** Resolve image filenames from `image` and/or `images` (deduped, `image` first). */
+export function resolveStoryImages(options: {
+  image?: string;
+  images?: string[];
+}): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+
+  for (const name of [options.image, ...(options.images ?? [])]) {
+    const clean = name?.trim();
+    if (!clean || seen.has(clean)) continue;
+    seen.add(clean);
+    result.push(clean);
+  }
+
+  return result;
+}
+
 export function resolveStoryDate(options: {
   date?: Date;
   image?: string;
+  images?: string[];
 }): Date | null {
   if (options.date) return options.date;
-  if (options.image) return parseDateFromImageName(options.image);
+  const first = resolveStoryImages(options)[0];
+  if (first) return parseDateFromImageName(first);
   return null;
 }
 

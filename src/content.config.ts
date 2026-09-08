@@ -11,8 +11,10 @@ const story = defineCollection({
     date: z.coerce.date().optional(),
     /** Optional teaser for the list page. */
     summary: z.string().optional(),
-    /** Filename in public/images/markus/story/ */
+    /** Filename in public/images/markus/story/ (single image). */
     image: z.string().optional(),
+    /** Multiple filenames in public/images/markus/story/. Shown stacked after the text. */
+    images: z.array(z.string()).optional(),
     /** Optional body text (can also use the markdown body). */
     text: z.string().optional(),
   }),
